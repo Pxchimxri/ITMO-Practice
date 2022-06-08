@@ -47,7 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_08_120408) do
     t.integer "client_rating"
     t.integer "driver_rating"
     t.bigint "client_id", null: false
-    t.bigint "driver_id", null: false
+    t.bigint "driver_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_orders_on_client_id"

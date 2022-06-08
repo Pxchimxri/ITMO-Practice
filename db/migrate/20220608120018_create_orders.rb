@@ -10,7 +10,7 @@ class CreateOrders < ActiveRecord::Migration[7.0]
       t.integer :client_rating
       t.integer :driver_rating
       t.references :client, null: false, foreign_key: {to_table: :users}
-      t.references :driver, null: false, foreign_key: {to_table: :users}
+      t.references :driver, foreign_key: {to_table: :users}
 
       t.timestamps
     end
