@@ -1,0 +1,24 @@
+<%= form_with model: @order do |form| %>
+  <div>
+    <%= form.label :from %><br>
+    <%= form.text_field :from %>
+    <% order.errors.full_messages_for(:from).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :to %><br>
+    <%= form.text_field :to%>
+    <% order.errors.full_messages_for(:to).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div><%= form.select :tariff, %w[standard comfort premium] %></div>
+
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

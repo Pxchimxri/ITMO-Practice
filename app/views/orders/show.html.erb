@@ -1,0 +1,16 @@
+<h1><%= @driver.name %></h1>
+
+<p><%= @client.name %></p>
+<p><%= @order.from %></p>
+<p><%= @order.to %></p>
+<p><%= @order.price %></p>
+<p><%= @order.tariff %></p>
+<p><%= @order.status %></p>
+<ul>
+  <li><%= link_to "Edit", edit_order_path(@order) %></li>
+  <li><%= link_to "Delete", order_path(@order), data: {
+    turbo_method: "delete",
+    turbo_confirm: "Are you sure?"
+  } %></li>
+  <li><%= link_to "Back", orders_path %></li>
+</ul>

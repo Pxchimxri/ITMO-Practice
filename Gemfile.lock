@@ -152,6 +152,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    redis (4.6.0)
     reline (0.3.1)
       io-console (~> 0.5)
     rspec-core (3.11.0)
@@ -212,6 +213,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.3)
+  redis (~> 4.0)
   rspec-rails
   sprockets-rails
   stimulus-rails
