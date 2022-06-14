@@ -1,16 +1,10 @@
-<h1><%= @driver.name %></h1>
+<h1><%= "Нет водителя" %></h1>
 
 <p><%= @client.name %></p>
-<p><%= @order.from %></p>
-<p><%= @order.to %></p>
-<p><%= @order.price %></p>
-<p><%= @order.tariff %></p>
-<p><%= @order.status %></p>
+<div><%= @info %></div>
+<p><%= "Status: " + @order.status %></p>
 <ul>
   <li><%= link_to "Edit", edit_order_path(@order) %></li>
-  <li><%= link_to "Delete", order_path(@order), data: {
-    turbo_method: "delete",
-    turbo_confirm: "Are you sure?"
-  } %></li>
+  <li><%= link_to "Delete", @order, method: "delete", data: { confirm: "Are you sure?" } %></li>
   <li><%= link_to "Back", orders_path %></li>
 </ul>

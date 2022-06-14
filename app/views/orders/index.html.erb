@@ -4,7 +4,7 @@
   <% @orders.each do |order| %>
     <li>
       <a href="<%= order_path(order) %>">
-        <%= @users.find(order.driver_id).name %><%= "," %>
+        <%= "Нет водителя" %><%= "," %>
         <%= @users.find(order.client_id).name %><%= "," %>
         <%= order.from %><%= "," %>
         <%= order.to %><%= "," %>

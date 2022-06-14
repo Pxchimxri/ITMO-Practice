@@ -2,21 +2,32 @@
   <div>
     <%= form.label :from %><br>
     <%= form.text_field :from %>
-    <% order.errors.full_messages_for(:from).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
   </div>
 
   <div>
     <%= form.label :to %><br>
     <%= form.text_field :to%>
-    <% order.errors.full_messages_for(:to).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
   </div>
 
   <div><%= form.select :tariff, %w[standard comfort premium] %></div>
 
+  <div>
+    <%= form.label :message %><br>
+    <%= form.text_area :message%>
+  </div>
+
+  <ul>
+    <% @options.each do |option| %>
+      <li>
+        <div>
+          <%= form.check_box option.name %>
+          <%= form.label option.name, "You need "+ option.name %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+
+  <div><%= hidden_field_tag 'client_id', params[:user_id]  %></div>
 
   <div>
     <%= form.submit %>

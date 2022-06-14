@@ -2,7 +2,10 @@
 
 <p><%= @user.name %></p>
 
+<div><%= @string %></div>
+
 <ul>
+  <li><%= link_to @link, new_order_path(user_id: @user.id) %></li>
   <li><%= link_to "Edit", edit_user_path(@user) %></li>
   <li><%= link_to "Delete", user_path(@user), data: {
     turbo_method: "delete",

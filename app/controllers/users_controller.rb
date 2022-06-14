@@ -4,10 +4,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    p user_params.keys
     @user = User.new(user_params)
-    p @user
-    @create_user = CreateUser.new(user_params.to_h)
+    @create_user = CreateUser.new(@user)
     @create_user.create
     if @create_user.save
       redirect_to :action => 'index'
@@ -18,6 +16,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @create_user = CreateUser.new(@user)
+    @string = @create_user.get_order
+    @link = @create_user.get_link_name
   end
 
   def edit
