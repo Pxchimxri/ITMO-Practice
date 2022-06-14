@@ -1,0 +1,11 @@
+<h1><%= @option.name %></h1>
+
+
+<ul>
+  <li><%= link_to "Edit", edit_option_path(@option) %></li>
+  <li><%= link_to "Delete", option_path(@option), data: {
+    turbo_method: "delete",
+    turbo_confirm: "Are you sure?"
+  } %></li>
+  <li><%= link_to "Back", options_path %></li>
+</ul>
