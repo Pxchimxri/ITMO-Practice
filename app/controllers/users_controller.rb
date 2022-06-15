@@ -5,9 +5,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @create_user = CreateUser.new(@user)
-    @create_user.create
-    if @create_user.save
+    user_service = UserService.new(@user)
+    user_service.create
+    if user_service.save
       redirect_to :action => 'index'
     else
       render :new, status: :unprocessable_entity
@@ -16,9 +16,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @create_user = CreateUser.new(@user)
-    @string = @create_user.get_order
-    @link = @create_user.get_link_name
+    user_service = UserService.new(@user)
+    @string = user_service.get_order
+    @link = user_service.get_link_name
   end
 
   def edit
@@ -37,6 +37,12 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    Order.where(:client_id => @user.id).all.each do |order|
+      OrderService.new(order).destroy
+    end
+    Order.where(:driver_id => @user.id).all.each do |order|
+      OrderService.new(order).destroy
+    end
     @user.destroy
 
     redirect_to :action => 'index'

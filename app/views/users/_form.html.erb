@@ -4,10 +4,7 @@
     <%= form.text_field :name %>
   </div>
 
-  <div>
-    <%= form.label :role %><br>
-    <%= form.text_field :role%>
-  </div>
+  <div><%= form.select :role, %w[driver client admin] %></div>
 
   <div>
     <%= form.submit %>

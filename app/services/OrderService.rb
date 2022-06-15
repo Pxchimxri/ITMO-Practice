@@ -1,4 +1,4 @@
-class CreateOrder
+class OrderService
   attr_accessor :order
   def initialize(order)
     @order = order
@@ -14,7 +14,15 @@ class CreateOrder
       @order.price = rand(2000)+1000
     end
     @order.client_id = client.id
-    @order.driver_id = 1
+    @order.driver_id = User.where(:role => "admin").first.id
+  end
+
+  def destroy
+    get_message.destroy
+    OrderOption.where(:order_id => @order.id ).each do |option|
+      option.destroy
+    end
+    @order.destroy
   end
 
   def get_options

@@ -37,6 +37,9 @@ class OptionsController < ApplicationController
 
   def destroy
     @option = Option.find(params[:id])
+    OrderOption.where(:option_id => @option.id ).each do |order|
+      order.destroy
+    end
     @option.destroy
 
     redirect_to root_path

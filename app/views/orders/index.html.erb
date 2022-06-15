@@ -4,7 +4,12 @@
   <% @orders.each do |order| %>
     <li>
       <a href="<%= order_path(order) %>">
-        <%= "Нет водителя" %><%= "," %>
+        <% if !@users.find(order.driver_id).admin? %>
+          <%= @users.find(order.driver_id).name %>
+        <% else %>
+          <%= "Заказ не принят" %>
+        <% end %>
+        <%= "," %>
         <%= @users.find(order.client_id).name %><%= "," %>
         <%= order.from %><%= "," %>
         <%= order.to %><%= "," %>

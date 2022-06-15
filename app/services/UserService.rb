@@ -1,4 +1,4 @@
-class CreateUser
+class UserService
   attr_accessor :user
 
 
@@ -19,8 +19,8 @@ class CreateUser
   def get_order
     if @user.cur_order_id != nil
       order = Order.find(@user.cur_order_id)
-      create_order = CreateOrder.new(order)
-      ("Заказ:\n" + create_order.get_info)
+      order_service = OrderService.new(order)
+      ("Заказ:\n" + order_service.get_info)
     else
       "Нет заказа"
     end

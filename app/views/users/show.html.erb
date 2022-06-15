@@ -5,11 +5,12 @@
 <div><%= @string %></div>
 
 <ul>
-  <li><%= link_to @link, new_order_path(user_id: @user.id) %></li>
+  <% if @user.client? %>
+   <li><%= link_to @link, new_order_path(user_id: @user.id) %></li>
+  <% else %>
+    <li><%= link_to @link, orders_path(user_id: @user.id) %></li>
+  <% end %>
   <li><%= link_to "Edit", edit_user_path(@user) %></li>
-  <li><%= link_to "Delete", user_path(@user), data: {
-    turbo_method: "delete",
-    turbo_confirm: "Are you sure?"
-  } %></li>
+  <li><%= link_to "Delete", @user, method: "delete", data: { confirm: "Are you sure?" } %></li>
   <li><%= link_to "Back", users_path %></li>
 </ul>

@@ -1,4 +1,9 @@
-<h1><%= "Нет водителя" %></h1>
+<% if !@driver.admin? %>
+  <h1><%= @driver.name %></h1>
+<% else %>
+  <h1><%= "Заказ не принят" %></h1>
+<% end %>
+
 
 <p><%= @client.name %></p>
 <div><%= @info %></div>

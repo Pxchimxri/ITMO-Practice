@@ -9,13 +9,13 @@ class OrdersController < ApplicationController
     @user = User.find(params[:client_id])
     @order = Order.new(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
     p @order
-    @create_order = CreateOrder.new(@order)
-    @create_order.create(@user)
-    @create_user = CreateUser.new(@user)
+    order_service = OrderService.new(@order)
+    order_service.create(@user)
+    user_service = UserService.new(@user)
     p @order
-    if @create_order.save
-      @create_user.new_order(@create_order.order)
-      @create_message = CreateMessage.new(order_params[:message], @create_order.order)
+    if order_service.save
+      user_service.new_order(order_service.order)
+      @create_message = CreateMessage.new(order_params[:message], order_service.order)
       @create_message.save
       ConnectOptions.new(order_params, @order).connect
       redirect_to user_path(@user)
@@ -27,7 +27,8 @@ class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
     @client = User.find(@order.client_id)
-    @info = CreateOrder.new(@order).get_info
+    @driver = User.find(@order.driver_id)
+    @info = OrderService.new(@order).get_info
   end
 
   def edit
@@ -51,12 +52,8 @@ class OrdersController < ApplicationController
 
   def destroy
     @order = Order.find(params[:id])
-    @create_order = CreateOrder.new(@order)
-    @create_order.get_message.destroy
-    OrderOption.where(:order_id => @order.id ).each do |option|
-      option.destroy
-    end
-    @order.destroy
+    order_service = OrderService.new(@order)
+    order_service.destroy
 
 
     redirect_to :action => 'index'

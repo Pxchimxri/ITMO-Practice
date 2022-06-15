@@ -3,9 +3,6 @@
 
 <ul>
   <li><%= link_to "Edit", edit_option_path(@option) %></li>
-  <li><%= link_to "Delete", option_path(@option), data: {
-    turbo_method: "delete",
-    turbo_confirm: "Are you sure?"
-  } %></li>
+  <li><%= link_to "Delete", @option, method: "delete", data: { confirm: "Are you sure?" } %></li>
   <li><%= link_to "Back", options_path %></li>
 </ul>
