@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_08_120408) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_14_171413) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,13 +28,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_08_120408) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "options_orders", id: false, force: :cascade do |t|
-    t.bigint "order_id", null: false
-    t.bigint "option_id", null: false
+  create_table "order_options", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "option_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["option_id"], name: "index_options_orders_on_option_id"
-    t.index ["order_id"], name: "index_options_orders_on_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -60,9 +58,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_08_120408) do
     t.float "rating"
     t.boolean "active", null: false
     t.string "role", null: false
+    t.integer "cur_order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "cur_order_id"
   end
 
   add_foreign_key "messages", "orders"

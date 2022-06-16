@@ -1,0 +1,16 @@
+<h1><%= @user.role %></h1>
+
+<p><%= @user.name %></p>
+
+<div><%= @string %></div>
+
+<ul>
+  <% if @user.client? %>
+   <li><%= link_to @link, new_order_path(user_id: @user.id) %></li>
+  <% else %>
+    <li><%= link_to @link, orders_path(user_id: @user.id) %></li>
+  <% end %>
+  <li><%= link_to "Edit", edit_user_path(@user) %></li>
+  <li><%= link_to "Delete", @user, method: "delete", data: { confirm: "Are you sure?" } %></li>
+  <li><%= link_to "Back", users_path %></li>
+</ul>
