@@ -12,7 +12,7 @@ class OrdersController < ApplicationController
     user_service = UserService.new(@user)
     if order_service.save
       user_service.new_order(order_service.order)
-      if order_params[:message] != ""
+      if order_params[:message].present?
         @assemble_message = CreateMessage.new(order_params[:message], order_service.order)
         @assemble_message.save
       end

@@ -19,7 +19,8 @@ class OrderService
   end
 
   def destroy
-    get_message.destroy
+    msg = get_message
+    get_message.destroy unless msg.nil?
     order.order_options.delete_all
     order.destroy
   end
@@ -48,9 +49,7 @@ class OrderService
       string += (element.name + ",\n")
     end
     msg = get_message
-    if msg != nil
-      string += ("Message: \n" + msg.content)
-    end
+    string += ("Message: \n" + msg.content) unless msg.nil?
     string
   end
 
