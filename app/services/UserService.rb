@@ -7,9 +7,9 @@ class UserService
   end
 
   def get_link_name
-    if @user.driver?
+    if user.driver?
       "Look for orders"
-    elsif @user.client?
+    elsif user.client?
       "New order"
     end
   end
@@ -17,8 +17,8 @@ class UserService
 
 
   def get_order
-    if @user.cur_order_id != nil
-      order = Order.find(@user.cur_order_id)
+    if user.cur_order_id.present?
+      order = Order.find(user.cur_order_id)
       order_service = OrderService.new(order)
       ("Заказ:\n" + order_service.get_info)
     else
@@ -27,16 +27,16 @@ class UserService
 
   end
 
-  def create
-    @user.active = true
+  def assemble
+    user.active = true
   end
 
   def new_order(order)
-    @user.update(cur_order_id: order.id)
+    user.update(cur_order_id: order.id)
   end
 
   def save
-    @user.save
+    user.save
   end
 
 

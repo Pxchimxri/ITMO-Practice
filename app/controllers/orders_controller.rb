@@ -5,18 +5,17 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @options = Option.all
     @user = User.find(params[:client_id])
     @order = Order.new(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
-    p @order
     order_service = OrderService.new(@order)
-    order_service.create(@user)
+    order_service.assemble(@user)
     user_service = UserService.new(@user)
-    p @order
     if order_service.save
       user_service.new_order(order_service.order)
-      @create_message = CreateMessage.new(order_params[:message], order_service.order)
-      @create_message.save
+      if order_params[:message] != ""
+        @assemble_message = CreateMessage.new(order_params[:message], order_service.order)
+        @assemble_message.save
+      end
       ConnectOptions.new(order_params, @order).connect
       redirect_to user_path(@user)
     else
@@ -34,10 +33,6 @@ class OrdersController < ApplicationController
   def edit
     @order = Order.find(params[:id])
     @options = Option.all
-    @option_names = []
-    @options.each do |element|
-      @option_names.push(element.name)
-    end
   end
 
   def update
@@ -64,17 +59,13 @@ class OrdersController < ApplicationController
     @users = User.all
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render xml: @orders }
       format.json { render json: @orders }
     end
   end
   private
   def order_params
     options = Option.all
-    option_names = []
-    options.each do |element|
-      option_names.push(element.name)
-    end
+    option_names = options.map(&:name)
     params.require(:order).permit(:from, :to, :tariff, :message, option_names)
   end
 

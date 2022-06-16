@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     user_service = UserService.new(@user)
-    user_service.create
+    user_service.assemble
     if user_service.save
       redirect_to :action => 'index'
     else
