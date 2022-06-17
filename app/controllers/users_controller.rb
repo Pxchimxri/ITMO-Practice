@@ -18,7 +18,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     user_service = UserService.new(@user)
     @string = user_service.get_order
-    @link = user_service.get_link_name
+    if @user.cur_order_id.present?
+      @order = Order.find(@user.cur_order_id)
+      @driver = User.find(@order.driver_id)
+    end
   end
 
   def edit
@@ -46,6 +49,20 @@ class UsersController < ApplicationController
     @user.destroy
 
     redirect_to :action => 'index'
+  end
+
+  def close
+    @driver = User.find(params[:id])
+    driver_service = DriverService.new(@driver)
+    driver_service.close
+    redirect_to user_path(@driver)
+  end
+
+  def cancel
+    @user = User.find(params[:id])
+    user_service = ClientService.new(@user)
+    user_service.cancel_order
+    redirect_to user_path(@user)
   end
 
   def index

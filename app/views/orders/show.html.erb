@@ -9,7 +9,12 @@
 <div><%= @info %></div>
 <p><%= "Status: " + @order.status %></p>
 <ul>
+  <% if !@driver.admin? %>
+    <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]) %></li>
+  <% else %>
+    <li><%= link_to "Accept", accept_order_path(@order, user_id: params[:user_id]) %></li>
+  <% end %>
   <li><%= link_to "Edit", edit_order_path(@order) %></li>
   <li><%= link_to "Delete", @order, method: "delete", data: { confirm: "Are you sure?" } %></li>
-  <li><%= link_to "Back", orders_path %></li>
+  <li><%= link_to "Back", orders_path(user_id: params[:user_id]) %></li>
 </ul>
