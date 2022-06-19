@@ -53,15 +53,13 @@ class UsersController < ApplicationController
 
   def close
     @driver = User.find(params[:id])
-    driver_service = DriverService.new(@driver)
-    driver_service.close
+    DriverService.new(@driver).close
     redirect_to user_path(@driver)
   end
 
   def cancel
     @user = User.find(params[:id])
-    user_service = ClientService.new(@user)
-    user_service.cancel_order
+    ClientService.new(@user).cancel_order
     redirect_to user_path(@user)
   end
 

@@ -4,18 +4,14 @@ Rails.application.routes.draw do
   resources :orders, :users, :options
   resources :orders do
     member do
-      get :cancel
-      put :cancel
-      get :accept
-      put :accept
+      delete :cancel
+      post :accept
     end
   end
   resources :users do
     member do
-      get :cancel
-      put :cancel
-      get :close
-      put :close
+      delete :cancel
+      delete :close
     end
   end
 

@@ -10,7 +10,7 @@
       <li><%= link_to "New order", new_order_path(user_id: @user.id) %></li>
     <% else %>
       <% if @driver.admin? %>
-        <li><%= link_to "Cancel order", cancel_user_path(@user) %></li>
+        <li><%= link_to "Cancel order", cancel_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
       <% end %>
     <% end %>
   <% else %>
@@ -18,7 +18,7 @@
       <li><%= link_to "Look for orders", orders_path(user_id: @user.id) %></li>
     <% else %>
       <li><%= link_to "Open order", order_path(@order, user_id: @user.id) %></li>
-      <li><%= link_to "Close order", close_user_path(@user) %></li>
+      <li><%= link_to "Close order", close_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
     <% end %>
   <% end %>
   <li><%= link_to "Edit", edit_user_path(@user) %></li>

@@ -12,7 +12,7 @@ class DriverService
   def cancel_order
     order = Order.find(driver.cur_order_id)
     driver.update(cur_order_id: nil)
-    driver_id = User.where(:role => "admin").first.id
+    driver_id = User.find_by(role: 'admin').id
     order.update(driver_id: driver_id)
   end
 

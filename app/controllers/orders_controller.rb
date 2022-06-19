@@ -67,16 +67,14 @@ class OrdersController < ApplicationController
   def cancel
     @order = Order.find(params[:id])
     @driver = User.find(params[:user_id])
-    driver_service = DriverService.new(@driver)
-    driver_service.cancel_order
+    DriverService.new(@driver).cancel_order
     redirect_to order_path(@order, user_id: params[:user_id])
   end
 
   def accept
     @order = Order.find(params[:id])
     @driver = User.find(params[:user_id])
-    driver_service = DriverService.new(@driver)
-    driver_service.accept(@order)
+    DriverService.new(@driver).accept(@order)
     redirect_to order_path(@order, user_id: params[:user_id])
   end
   
