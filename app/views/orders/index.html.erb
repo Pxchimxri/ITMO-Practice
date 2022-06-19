@@ -3,7 +3,7 @@
 <ul>
   <% @orders.each do |order| %>
     <li>
-      <a href="<%= order_path(order) %>">
+      <a href="<%= order_path(order, user_id: params[:user_id]) %>">
         <% if !@users.find(order.driver_id).admin? %>
           <%= @users.find(order.driver_id).name %>
         <% else %>
@@ -18,4 +18,5 @@
     </li>
   <% end %>
   <div><%= link_to "New", new_order_path(@order) %></div>
+  <div><%= link_to "Back",user_path(@driver) %></div>
 </ul>
