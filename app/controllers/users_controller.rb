@@ -23,7 +23,10 @@ class UsersController < ApplicationController
     end
     if @user.cur_order_id.present?
       @order = Order.find(@user.cur_order_id)
-      @driver = User.find(@order.driver_id)
+      @driver = false
+      if @order.driver_id.present?
+        @driver = true
+      end
     end
   end
 

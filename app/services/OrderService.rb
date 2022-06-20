@@ -16,7 +16,6 @@ class OrderService
       order.price = rand(2000)+1000
     end
     order.client_id = client.id
-    order.driver_id = User.find_by(role: 'admin').id
   end
 
   def destroy
@@ -36,7 +35,7 @@ class OrderService
   end
 
   def get_message
-    Message.find_by(order_id: order.id)
+    order.message
   end
 
   def get_info
@@ -55,6 +54,7 @@ class OrderService
   end
 
   def save
+    p order
     order.save
   end
 end
