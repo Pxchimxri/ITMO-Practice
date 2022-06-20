@@ -1,0 +1,2 @@
+class OrderService < ApplicationService
+end
