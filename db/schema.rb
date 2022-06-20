@@ -62,7 +62,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_08_120408) do
     t.string "role", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "cur_order_id"
   end
 
   add_foreign_key "messages", "orders"
