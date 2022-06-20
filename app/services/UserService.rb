@@ -6,16 +6,6 @@ class UserService
     @user = user
   end
 
-  def get_link_name
-    if user.driver?
-      "Look for orders"
-    elsif user.client?
-      "New order"
-    end
-  end
-
-
-
   def get_order
     if user.cur_order_id.present?
       order = Order.find(user.cur_order_id)

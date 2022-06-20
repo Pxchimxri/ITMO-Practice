@@ -27,7 +27,9 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     @client = User.find(@order.client_id)
     @driver = User.find(@order.driver_id)
+    @new_driver = User.find(params[:user_id])
     @info = OrderService.new(@order).get_info
+    @driver_service = DriverService.new(@new_driver)
   end
 
   def edit
@@ -49,19 +51,33 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     order_service = OrderService.new(@order)
     order_service.destroy
-
-
     redirect_to :action => 'index'
   end
 
   def index
     @orders = Order.all
     @users = User.all
+    @driver = User.find(params[:user_id])
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @orders }
     end
   end
+
+  def cancel
+    @order = Order.find(params[:id])
+    @driver = User.find(params[:user_id])
+    DriverService.new(@driver).cancel_order
+    redirect_to order_path(@order, user_id: params[:user_id])
+  end
+
+  def accept
+    @order = Order.find(params[:id])
+    @driver = User.find(params[:user_id])
+    DriverService.new(@driver).accept(@order)
+    redirect_to order_path(@order, user_id: params[:user_id])
+  end
+  
   private
   def order_params
     options = Option.all
