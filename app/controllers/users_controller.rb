@@ -18,9 +18,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     user_service = UserService.new(@user)
     @string = user_service.get_order
+    @money = FinanceService.new.count_money if @user.admin?
     if @user.cur_order_id.present?
       @order = Order.find(@user.cur_order_id)
-      @driver = User.find(@order.driver_id)
+      @driver_presence = @order.driver_id.present?
     end
   end
 

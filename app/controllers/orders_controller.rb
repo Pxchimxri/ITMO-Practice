@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @options = Option.all
+    @msg = params[:msg] || ''
   end
 
   def create
@@ -13,28 +14,26 @@ class OrdersController < ApplicationController
     if order_service.save
       user_service.new_order(order_service.order)
       if order_params[:message].present?
-        @assemble_message = CreateMessage.new(order_params[:message], order_service.order)
-        @assemble_message.save
+        CreateMessage.new(order_params[:message], order_service.order).save
       end
       ConnectOptions.new(order_params, @order).connect
       redirect_to user_path(@user)
     else
-      render :new, status: :unprocessable_entity
+      redirect_to new_order_path(user_id: @user.id, msg: "Incorrect input")
     end
   end
 
   def show
     @order = Order.find(params[:id])
     @client = User.find(@order.client_id)
-    @driver = User.find(@order.driver_id)
-    @new_driver = User.find(params[:user_id])
+    @driver = User.find(@order.driver_id) if @order.driver_id.present?
     @info = OrderService.new(@order).get_info
-    @driver_service = DriverService.new(@new_driver)
   end
 
   def edit
     @order = Order.find(params[:id])
     @options = Option.all
+    @msg = params[:msg] || ''
   end
 
   def update

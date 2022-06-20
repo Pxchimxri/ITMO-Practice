@@ -28,8 +28,12 @@
   </ul>
 
   <div><%= hidden_field_tag 'client_id', params[:user_id]  %></div>
+  <div>
+    <%= @msg %>
+  </div>
 
   <div>
     <%= form.submit %>
   </div>
+
 <% end %>

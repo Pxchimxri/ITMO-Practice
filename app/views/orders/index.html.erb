@@ -4,7 +4,7 @@
   <% @orders.each do |order| %>
     <li>
       <a href="<%= order_path(order, user_id: params[:user_id]) %>">
-        <% if !@users.find(order.driver_id).admin? %>
+        <% if order.driver_id.present? %>
           <%= @users.find(order.driver_id).name %>
         <% else %>
           <%= "Заказ не принят" %>
