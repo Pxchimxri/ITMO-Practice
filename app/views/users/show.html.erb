@@ -14,7 +14,7 @@
     <% if @user.cur_order_id.nil? %>
       <li><%= link_to "New order", new_order_path(user_id: @user.id) %></li>
     <% else %>
-      <% if !@driver %>
+      <% unless @driver_presence %>
         <li><%= link_to "Cancel order", cancel_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
       <% end %>
     <% end %>

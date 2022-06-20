@@ -2,11 +2,7 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @options = Option.all
-    if params[:msg].present?
-      @msg = params[:msg]
-    else
-      @msg = ''
-    end
+    @msg = params[:msg] || ''
   end
 
   def create
@@ -30,20 +26,14 @@ class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
     @client = User.find(@order.client_id)
-    if @order.driver_id.present?
-      @driver = User.find(@order.driver_id)
-    end
+    @driver = User.find(@order.driver_id) if @order.driver_id.present?
     @info = OrderService.new(@order).get_info
   end
 
   def edit
     @order = Order.find(params[:id])
     @options = Option.all
-    if params[:msg].present?
-      @msg = params[:msg]
-    else
-      @msg = ''
-    end
+    @msg = params[:msg] || ''
   end
 
   def update

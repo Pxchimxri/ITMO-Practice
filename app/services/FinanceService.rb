@@ -6,10 +6,11 @@ class FinanceService
   end
 
   def count_money
-    orders = Order.all
     money = 0.0
-    orders.each do |order|
-      money += order.interest_rate * order.price
+    Order.find_in_batches do |orders|
+      orders.each do |order|
+        money += order.interest_rate * order.price
+      end
     end
     money
   end

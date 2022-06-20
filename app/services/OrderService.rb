@@ -54,7 +54,6 @@ class OrderService
   end
 
   def save
-    p order
     order.save
   end
 end
