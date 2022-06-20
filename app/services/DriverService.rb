@@ -19,8 +19,7 @@ class DriverService
   def close
     order = Order.find(driver.cur_order_id)
     order.update(status: "finished")
-    finance_service = FinanceService.new(order)
-    finance_service.pay_off
+    FinanceService.new.pay_off(driver, order)
     driver.update(cur_order_id: nil)
     user = User.find(order.client_id)
     user.update(cur_order_id: nil)

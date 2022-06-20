@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :users do
     member do
       delete :cancel
-      delete :close
+      post :close
     end
   end
 

@@ -19,6 +19,9 @@ class UserService
 
   def assemble
     user.active = true
+    if user.driver?
+      user.balance = 0
+    end
   end
 
   def new_order(order)
