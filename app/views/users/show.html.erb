@@ -34,7 +34,7 @@
       <li><%= link_to "Close order", close_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
     <% end %>
   <% end %>
-  <li><%= link_to "Edit", edit_user_path(@user) %></li>
-  <li><%= link_to "Delete", @user, method: "delete", data: { confirm: "Are you sure?" } %></li>
+  <li><%= link_to "Edit", edit_user_registration_path(@user) %></li>
+  <li><%= link_to "Delete",registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete  %></li>
   <li><%= link_to "Back", users_path %></li>
 </ul>
