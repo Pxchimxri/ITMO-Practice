@@ -6,6 +6,9 @@
 
 
 <p><%= @client.name %></p>
+<% if @order.driver_rating.present? %>
+  <p><%= "Rating of this order: " + @order.driver_rating.to_s %></p>"
+<% end %>
 <div><%= @info %></div>
 <p><%= "Status: " + @order.status %></p>
 <ul>

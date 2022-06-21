@@ -40,7 +40,11 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
 
     if @order.update(order_params)
-      redirect_to @order
+      if order_params[:driver_rating].present?
+        redirect_to rate_order_path(@order)
+      else
+        redirect_to @order
+      end
     else
       render :edit, status: :unprocessable_entity
     end
@@ -76,12 +80,31 @@ class OrdersController < ApplicationController
     DriverService.new(@driver).accept(@order)
     redirect_to order_path(@order, user_id: params[:user_id])
   end
+
+  def rate_page
+    @order = Order.find(params[:id])
+    @client, @driver = User.find(@order.client_id), User.find(@order.driver_id)
+    @rating_presence = @order.driver_rating.present?
+  end
+
+  def rate
+    @order = Order.find(params[:id])
+    RateService.new.rate_driver(@order)
+    redirect_to rate_page_order_path(@order)
+  end
+
+  def skip_rate
+    @order = Order.find(params[:id])
+    @client = User.find(@order.client_id)
+    RateService.new.close_cur_order_id(@order)
+    redirect_to user_path(@client)
+  end
   
   private
   def order_params
     options = Option.all
     option_names = options.map(&:name)
-    params.require(:order).permit(:from, :to, :tariff, :message, option_names)
+    params.require(:order).permit(:from, :to, :tariff, :message, option_names, :driver_rating)
   end
 
 

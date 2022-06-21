@@ -3,6 +3,9 @@
 <p><%= @user.name %></p>
 <% if @user.driver? %>
   <p><%= "Balance: " + @user.balance.to_s %></p>
+  <% if @user.rating.present? %>
+    <p><%= "Rating: " + @user.rating.to_s %></p>
+  <% end %>
 <% end %>
 <% if @user.admin? %>
   <p><%= "Money earned: " + @money.to_s %></p>
@@ -13,6 +16,8 @@
   <% if @user.client? %>
     <% if @user.cur_order_id.nil? %>
       <li><%= link_to "New order", new_order_path(user_id: @user.id) %></li>
+    <% elsif  @order.finished?%>
+      <li><%= link_to "Rate last driver", rate_page_order_path(@order) %></li>
     <% else %>
       <% unless @driver_presence %>
         <li><%= link_to "Cancel order", cancel_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
