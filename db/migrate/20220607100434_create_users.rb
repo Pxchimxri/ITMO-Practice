@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :name, null: false
       t.decimal :balance
       t.float :rating
-      t.boolean :active, null:false
+      t.boolean :active, null: false
       t.string :role, null: false
       t.integer :cur_order_id
 
