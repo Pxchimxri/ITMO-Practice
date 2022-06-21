@@ -1,11 +1,12 @@
 class OrderService
+  INTEREST_RATE = 0.05
   attr_accessor :order
   def initialize(order)
     @order = order
   end
 
   def assemble(client)
-    order.interest_rate = 0.05
+    order.interest_rate = INTEREST_RATE
     order.status = "not_finished"
     if order.standard?
       order.price = rand(300)+150
@@ -15,7 +16,6 @@ class OrderService
       order.price = rand(2000)+1000
     end
     order.client_id = client.id
-    order.driver_id = User.where(:role => "admin").first.id
   end
 
   def destroy
@@ -35,7 +35,7 @@ class OrderService
   end
 
   def get_message
-    Message.where(:order_id => order.id).first
+    order.message
   end
 
   def get_info

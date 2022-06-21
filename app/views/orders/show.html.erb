@@ -1,4 +1,4 @@
-<% if !@driver.admin? %>
+<% if @order.driver_id.present? %>
   <h1><%= @driver.name %></h1>
 <% else %>
   <h1><%= "Заказ не принят" %></h1>
@@ -9,7 +9,7 @@
 <div><%= @info %></div>
 <p><%= "Status: " + @order.status %></p>
 <ul>
-  <% if !@driver.admin? %>
+  <% if @order.driver_id.present? %>
     <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
   <% else %>
     <li><%= link_to "Accept", accept_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>

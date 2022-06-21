@@ -1,7 +1,12 @@
 <h1><%= @user.role %></h1>
 
 <p><%= @user.name %></p>
-
+<% if @user.driver? %>
+  <p><%= "Balance: " + @user.balance.to_s %></p>
+<% end %>
+<% if @user.admin? %>
+  <p><%= "Money earned: " + @money.to_s %></p>
+<% end %>
 <div><%= @string %></div>
 
 <ul>
@@ -9,16 +14,19 @@
     <% if @user.cur_order_id.nil? %>
       <li><%= link_to "New order", new_order_path(user_id: @user.id) %></li>
     <% else %>
-      <% if @driver.admin? %>
+      <% unless @driver_presence %>
         <li><%= link_to "Cancel order", cancel_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
       <% end %>
     <% end %>
   <% else %>
+    <% if @user.admin? %>
+      <li> <%= link_to "Options menu", options_path(user_id: @user.id) %> </li>
+    <% end %>
     <% if @user.cur_order_id.nil? %>
       <li><%= link_to "Look for orders", orders_path(user_id: @user.id) %></li>
     <% else %>
       <li><%= link_to "Open order", order_path(@order, user_id: @user.id) %></li>
-      <li><%= link_to "Close order", close_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
+      <li><%= link_to "Close order", close_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
     <% end %>
   <% end %>
   <li><%= link_to "Edit", edit_user_registration_path(@user) %></li>
