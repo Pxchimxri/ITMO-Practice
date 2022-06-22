@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     member do
       delete :cancel
       post :accept
+      get :rate_page
+      post :rate
+      get :rate
+      delete :skip_rate
     end
   end
   resources :users do

@@ -49,7 +49,12 @@ class OrderService
       string += (element.name + ",\n")
     end
     msg = get_message
-    string += ("Message: \n" + msg.content) unless msg.nil?
+    string += ("Message: \n" + msg.content + "\n") unless msg.nil?
+    if order.driver_id.present?
+      driver = User.find(order.driver_id)
+      string += ("Driver: " + driver.name)
+      string += (", " + driver.rating.to_s) if driver.rating.present?
+    end
     string
   end
 

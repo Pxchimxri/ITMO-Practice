@@ -20,7 +20,5 @@ class DriverService
     order.update(status: "finished")
     FinanceService.new.pay_off(driver, order)
     driver.update(cur_order_id: nil)
-    user = User.find(order.client_id)
-    user.update(cur_order_id: nil)
   end
 end

@@ -1,0 +1,18 @@
+<h1><%= 'Rating' %></h1>
+<% if @rating_presence %>
+  <p><%= "Thanks for you rate: " + @order.driver_rating.to_s %></p>
+  <li><%= link_to "Back", user_path(@client) %></li>
+<% else %>
+  <p><%= @client.name + ", please rate your last driver " + @driver.name + " or "  %>
+    <%= link_to "skip this", skip_rate_order_path(@order), method: "delete", data: { confirm: "Are you sure?" } %></p>
+  <%= form_with model: @order do |form| %>
+
+
+    <div><%= form.select :driver_rating, @order.RATES %></div>
+
+    <div>
+      <%= form.submit 'Submit', :name => 'submit' %>
+    </div>
+
+  <% end %>
+<% end %>
