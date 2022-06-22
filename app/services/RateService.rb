@@ -2,7 +2,7 @@ class RateService
 
   def rate_driver(order)
     driver = User.find(order.driver_id)
-    orders = Order.where(driver_id: driver.id).all
+    orders = Order.where(driver_id: driver.id)
     count = 0
     rating = 0.0
     orders.each do |ord|

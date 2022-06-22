@@ -8,7 +8,7 @@
   <%= form_with model: @order do |form| %>
 
 
-    <div><%= form.select :driver_rating, [1, 2, 3, 4, 5] %></div>
+    <div><%= form.select :driver_rating, @order.RATES %></div>
 
     <div>
       <%= form.submit 'Submit', :name => 'submit' %>
