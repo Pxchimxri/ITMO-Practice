@@ -24,6 +24,7 @@ class OrdersController < ApplicationController
   end
 
   def show
+    @user = User.find(params[:user_id])
     @order = Order.find(params[:id])
     @client = User.find(@order.client_id)
     @driver = User.find(@order.driver_id) if @order.driver_id.present?
@@ -38,15 +39,20 @@ class OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
-
-    if @order.update(order_params)
-      if order_params[:driver_rating].present?
-        redirect_to rate_order_path(@order)
-      else
-        redirect_to @order
-      end
+    if order_params[:driver_rating].present?
+      @order.update(order_params)
+      redirect_to rate_order_path(@order)
     else
-      render :edit, status: :unprocessable_entity
+      if @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
+        @user = User.find(params[:client_id])
+        if order_params[:message].present?
+          CreateMessage.new(order_params[:message], @order).save
+        end
+        ConnectOptions.new(order_params, @order).connect
+        redirect_to user_path(@user)
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 

@@ -10,7 +10,7 @@ class UserService
     if user.cur_order_id.present?
       order = Order.find(user.cur_order_id)
       order_service = OrderService.new(order)
-      ("Заказ:\n" + order_service.get_info)
+      ("Заказ:<br>" + order_service.get_info)
     else
       "Нет заказа"
     end

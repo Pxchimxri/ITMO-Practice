@@ -12,7 +12,7 @@ class RateService
       end
     end
     rating /= count
-    driver.update(rating: rating) if count != 0
+    driver.update(rating: rating.round(2)) if count != 0
     close_cur_order_id(order)
   end
 

@@ -17,11 +17,10 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     user_service = UserService.new(@user)
-    @string = user_service.get_order
+    @info = user_service.get_order
     @money = FinanceService.new.count_money if @user.admin?
     if @user.cur_order_id.present?
       @order = Order.find(@user.cur_order_id)
-      @driver_presence = @order.driver_id.present?
     end
   end
 
@@ -55,6 +54,12 @@ class UsersController < ApplicationController
   def close
     @driver = User.find(params[:id])
     DriverService.new(@driver).close
+    redirect_to user_path(@driver)
+  end
+
+  def pick_up_passenger
+    @driver = User.find(params[:id])
+    DriverService.new(@driver).pick_up_passenger
     redirect_to user_path(@driver)
   end
 
