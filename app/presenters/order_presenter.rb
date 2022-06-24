@@ -18,8 +18,12 @@ class OrderPresenter
   def status_formatting
     if @order.finished?
       { icon: "icofont icofont-check-circled", text_type: "text-success" }
+    elsif @order.looking_for_car?
+      { icon: "icofont icofont-clock-time", text_type: "text-secondary" }
+    elsif @order.accepted?
+      { icon: "icofont icofont-circled-left", text_type: "text-primary" }
     elsif @order.on_way?
-      { icon: "", text_type: "text-secondary" }
+      { icon: "icofont icofont-circled-right", text_type: "text-primary" }
     else
       { icon: "icofont icofont-close-circled", text_type: "text-danger" }
     end
