@@ -1,0 +1,50 @@
+<table class="table project-table table-centered table-nowrap">
+  <thead>
+  <tr class="text-center">
+    <th scope="col">#</th>
+    <th scope="col">Начало поездки</th>
+    <th scope="col">Пассажир</th>
+    <th scope="col">Водитель</th>
+    <th scope="col">Откуда/Куда</th>
+    <th scope="col">Статус</th>
+    <th scope="col">Получит водитель</th>
+    <th scope="col">Сбор сервиса</th>
+    <th scope="col" style="width: 16.66%;">
+      <div class="input-group mb-0">
+        <input type="text" class="form-control form-control-sm" placeholder="Поиск..." aria-describedby="project-search-addon"/>
+        <button class="btn btn-danger" type="button">
+          <i class="icofont icofont-ui-search"></i></button>
+      </div>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @orders.each_with_index do |order, i| %>
+    <% presenter = OrderPresenter.new(order) %>
+    <tr>
+      <th scope="row"><%= i + 1 %></th>
+      <td class="text-center"><%= presenter.start_datetime %></td>
+      <td class="text-center"><%= order.client.name %></td>
+      <td class="text-center"><%= order.driver.name %></td>
+      <td>
+        <p class="text-gray mb-1"><i class="icofont icofont-location-arrow"></i>
+          <%= order.from %>
+        </p>
+        <p class="text-gray mb-2"><i class="icofont icofont-location-pin"></i>
+          <%= order.to %>
+      </td>
+      <td class="text-center">
+        <span class="<%= presenter.status_formatting[:text_type] %> font-12"> <%= order.status %></span>
+      </td>
+      <td class="text-center"><%= order.driver_income %></td>
+      <td class="text-center"><%= order.service_income %></td>
+      <td class="text-center">
+        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать">
+          <i class="icofont icofont-ui-edit"></i></button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить">
+          <i class="icofont icofont-bin h5"></i></button>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

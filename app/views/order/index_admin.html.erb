@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Orders</title>
+</head>
+<body>
+
+<div class="container">
+  <%= render partial: "order/dashboard_total_panel", locals: { orders: @orders, income_total: @income_total } %>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <%= render partial: "order/admin_order_list", locals: { orders: @orders } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
