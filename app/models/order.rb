@@ -6,4 +6,7 @@ class Order < ApplicationRecord
   has_one :message
   has_many :order_options
   has_many :options, through: :order_options
+
+  attr_accessor :service_income
+  attr_accessor :driver_income
 end
