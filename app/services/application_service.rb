@@ -1,2 +1,2 @@
-class ApplicationService < Pattern::Service
+class ApplicationService < Patterns::Service
 end
