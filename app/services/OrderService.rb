@@ -7,7 +7,7 @@ class OrderService
 
   def assemble(client)
     order.interest_rate = INTEREST_RATE
-    order.status = "not_finished"
+    order.status = "looking_for_car"
     if order.standard?
       order.price = rand(300)+150
     elsif order.comfort?
@@ -39,22 +39,20 @@ class OrderService
   end
 
   def get_info
-    string = "To: " + order.to + "\n" +
-      "From: " + order.from + "\n" +
-      "Price: " + order.price.to_s + "\n" +
-      "Tariff: " + order.tariff + "\n" +
-      "Options: \n"
+    string = "To: " + order.to + "<br>From: " + order.from + "<br>Price: " + order.price.to_s + "<br>Tariff: " + order.tariff + "<br>" + "Options:<br>"
     options = get_options
     options.each do |element|
-      string += (element.name + ",\n")
+      string += (element.name + ",<br>")
     end
     msg = get_message
-    string += ("Message: \n" + msg.content + "\n") unless msg.nil?
+    string += ("Message: <br>" + msg.content + "<br>") unless msg.nil?
+    string += ("Client: " + order.client.name + "<br>")
     if order.driver_id.present?
       driver = User.find(order.driver_id)
       string += ("Driver: " + driver.name)
       string += (", " + driver.rating.to_s) if driver.rating.present?
     end
+    p string
     string
   end
 
