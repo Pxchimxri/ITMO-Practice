@@ -12,7 +12,7 @@
 <div><%= @info.html_safe %></div>
 <p><%= "Status: " + @order.status %></p>
 <ul>
-  <% if @user.driver? %>
+  <% if @user.driver? && (@order.looking_for_car? || @order.accepted?) %>
     <% if @order.driver_id.present? %>
       <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
     <% else %>
