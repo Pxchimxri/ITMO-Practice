@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   enum :tariff => {standard: "standard", comfort: "comfort", premium: "premium"}
-  enum :status => {finished: "finished", looking_for_car: "looking for car", canceled: "canceled", accepted: "accepted", on_way: "on way"}
+  enum :status => {finished: "finished", looking_for_car: "looking_for_car", canceled: "canceled", accepted: "accepted", on_way: "on_way"}
   belongs_to :client, :class_name => "User"
   belongs_to :driver, :class_name => "User", optional: true
   has_one :message

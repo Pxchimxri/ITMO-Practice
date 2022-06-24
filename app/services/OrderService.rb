@@ -7,7 +7,7 @@ class OrderService
 
   def assemble(client)
     order.interest_rate = INTEREST_RATE
-    order.status = "looking for car"
+    order.status = "looking_for_car"
     if order.standard?
       order.price = rand(300)+150
     elsif order.comfort?
