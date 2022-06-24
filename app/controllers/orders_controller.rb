@@ -51,7 +51,7 @@ class OrdersController < ApplicationController
         ConnectOptions.new(order_params, @order).connect
         redirect_to user_path(@user)
       else
-        render :edit, status: :unprocessable_entity
+        redirect_to edit_order_path(user_id: @user.id, msg: "Incorrect input")
       end
     end
   end
