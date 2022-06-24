@@ -45,7 +45,7 @@ gem "bootsnap", require: false
 # Helpful patterns to reduce boilerplate code
 gem "rails-patterns"
 
-# Helpful patterns to reduce boilerplate code
+# Readymade styles gem for views styling
 gem "bootstrap"
 gem "jquery-rails"
 
