@@ -1,0 +1,27 @@
+<% if @order.driver_id.present? %>
+  <h1><%= @driver.name %></h1>
+<% else %>
+  <h1><%= "Заказ не принят" %></h1>
+<% end %>
+
+
+<p><%= @client.name %></p>
+<% if @order.driver_rating.present? %>
+  <p><%= "Rating of this order: " + @order.driver_rating.to_s %></p>"
+<% end %>
+<div><%= @info.html_safe %></div>
+<p><%= "Status: " + @order.status %></p>
+<ul>
+  <% if @user.driver? && (@order.looking_for_car? || @order.accepted?) %>
+    <% if @order.driver_id.present? %>
+      <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
+    <% else %>
+      <li><%= link_to "Accept", accept_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>
+    <% end %>
+  <% end %>
+  <% if @user.cur_order_id.present? %>
+    <li><%= link_to "Back", user_path(@user) %></li>
+  <% else %>
+    <li><%= link_to "Back", orders_path(user_id: params[:user_id]) %></li>
+  <% end %>
+</ul>

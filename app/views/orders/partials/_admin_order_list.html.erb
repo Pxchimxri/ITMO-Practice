@@ -25,7 +25,7 @@
       <th scope="row"><%= i + 1 %></th>
       <td class="text-center"><%= presenter.start_datetime %></td>
       <td class="text-center"><%= order.client.name %></td>
-      <td class="text-center"><%= order.driver.name %></td>
+      <td class="text-center"><%= presenter.driver_name %></td>
       <td>
         <p class="text-gray mb-1"><i class="icofont icofont-location-arrow"></i>
           <%= order.from %>
@@ -36,8 +36,8 @@
       <td class="text-center">
         <span class="<%= presenter.status_formatting[:text_type] %> font-12"> <%= order.status %></span>
       </td>
-      <td class="text-center"><%= order.driver_income %></td>
-      <td class="text-center"><%= order.service_income %></td>
+      <td class="text-center"><%= order.driver_income.round(2) %></td>
+      <td class="text-center"><%= order.service_income.round(2) %></td>
       <td class="text-center">
         <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать">
           <i class="icofont icofont-ui-edit"></i></button>

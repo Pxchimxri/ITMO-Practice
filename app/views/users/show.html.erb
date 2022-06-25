@@ -1,0 +1,44 @@
+<h1><%= @user.role %></h1>
+
+<p><%= @user.name %></p>
+<% if @user.driver? %>
+  <p><%= "Balance: " + @user.balance.to_s %></p>
+  <% if @user.rating.present? %>
+    <p><%= "Rating: " + @user.rating.to_s %></p>
+  <% end %>
+<% end %>
+<% if @user.admin? %>
+  <p><%= "Money earned: " + @money.to_s %></p>
+<% end %>
+<div><%= @info.html_safe %></div>
+
+<ul>
+  <% if @user.cur_order_id.present? %>
+    <li><%= link_to "Open order", order_path(@order, user_id: @user.id) %></li>
+  <% end %>
+  <% if @user.client? %>
+    <% if @user.cur_order_id.nil? %>
+      <li><%= link_to "New order", new_order_path(user_id: @user.id) %></li>
+    <% elsif  @order.finished?%>
+      <li><%= link_to "Rate last driver", rate_page_order_path(@order) %></li>
+    <% else %>
+      <% if @order.looking_for_car? || @order.accepted? %>
+        <li><%= link_to "Cancel order", cancel_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
+        <li><%= link_to "Edit order", edit_order_path(@order, user_id: @user.id) %></li>
+      <% end %>
+    <% end %>
+  <% else %>
+    <% if @user.admin? %>
+      <li> <%= link_to "Options menu", options_path(user_id: @user.id) %> </li>
+    <% end %>
+    <% if @user.cur_order_id.nil? %>
+      <li><%= link_to "Look for orders", orders_path(user_id: @user.id) %></li>
+    <% elsif @order.on_way?%>
+      <li><%= link_to "Close order", close_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
+    <% else %>
+      <li><%= link_to "Pick up passenger", pick_up_passenger_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
+    <% end %>
+  <% end %>
+  <li><%= link_to "Edit", edit_user_registration_path(@user) %></li>
+  <li><%= link_to "Back", users_path %></li>
+</ul>

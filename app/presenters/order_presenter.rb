@@ -28,4 +28,10 @@ class OrderPresenter
       { icon: "icofont icofont-close-circled", text_type: "text-danger" }
     end
   end
+
+  def driver_name
+    if @order.driver
+      @order.driver.name
+    end
+  end
 end

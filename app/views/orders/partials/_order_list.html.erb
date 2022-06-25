@@ -1,7 +1,7 @@
 <% @orders.each do |order| %>
   <div class="bg-white card mb-4 shadow-sm">
     <div class="p-4">
-      <h5 class="float-end text-primary fw-bolder mb-1"><%= order.price %> &#8381;</h5>
+      <h5 class="float-end text-primary fw-bolder mb-1"><%= order.price.round(2) %> &#8381;</h5>
       <%= render partial: "orders/partials/order_datetime", locals: { order: order } %>
       <h6 class="float-end fw-bolder"><%= order.tariff %></h6>
       <% unless order.looking_for_car? %>

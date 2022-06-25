@@ -1,0 +1,19 @@
+<h1>Users</h1>
+
+<ul>
+  <% @users.each do |user| %>
+    <li>
+      <a href="<%= user_path(user) %>">
+        <%= user.name %><%= "," %>
+        <%= user.role%>
+      </a>
+    </li>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <span>Здравствуйте, <%= current_user.name %></span>
+    <%= link_to 'Выйти', destroy_user_session_path, :method => :delete %>
+  <% else %>
+    <%= link_to 'Войти', new_user_session_path %> или <%= link_to 'Зарегистрироваться', new_user_registration_path %>
+  <% end %>
+</ul>
