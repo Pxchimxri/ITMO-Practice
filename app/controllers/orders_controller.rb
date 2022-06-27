@@ -67,10 +67,10 @@ class OrdersController < ApplicationController
     user = User.find(params[:user_id])
     @role = user.role                                                         #
     if @role == "client"                                                     # TODO: replace hardcoded role with cancancan
-      @orders = ClientOrdersHistoryQuery.call(client: user)    #
+      @orders = Order.client(user)                                           #
       ClientOrderListService.call(@orders)
     elsif @role == "driver"
-      @orders = LookingForCarOrdersQuery.call
+      @orders = Order.looking_for_car_and_user_active
       DriverOrderListService.call(@orders)
     elsif @role == "admin"
       @orders = Order.all                                                   # TODO: implement pagination
