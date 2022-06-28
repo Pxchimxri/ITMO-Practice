@@ -4,22 +4,26 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Define abilities for the passed in user here. For example:
-    #
-    # user ||= User.new # guest user (not logged in)
-    # if user.admin?
-    #   can :show, :all
-    # else
-    #   can :index, :all
-    # end
+    # Define abilities for the passed in user here.
+    user ||= User.new # guest user (not logged in)
 
     # return unless user.present? # additional permissions for logged in users (they can read their own posts)
 
-    can :interact, User, id: user.id
+    can :manage, User, id: user.id
+
+    if user.driver?
+      can %i[show index close], Order, driver_id: user.id
+      can %i[show index cancel accept], Order, status: 'looking_for_driver'
+    end
+
+    if user.client?
+      can %i[create], Order
+      can %i[show edit update index cancel], Order, client_id: user.id
+    end
 
     return unless user.admin? # additional permissions for administrators
 
-    can :interact, User
+    can :manage, :all
 
     #
     # The first argument to `can` is the action you are giving the user

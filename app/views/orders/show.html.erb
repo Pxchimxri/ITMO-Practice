@@ -1,20 +1,44 @@
-<% if @order.driver_id.present? %>
-  <h1><%= @driver.name %></h1>
-<% else %>
-  <h1><%= "Заказ не принят" %></h1>
+<h1><%= "Order ##{@order.id}"%></h1>
+
+<% if current_user.driver? %>
+  <h2><%= "Client: #{@client.name}" %></h2>
 <% end %>
 
-
-<p><%= @client.name %></p>
-<div><%= @info %></div>
-<p><%= "Status: " + @order.status %></p>
-<ul>
+<% if current_user.client? %>
   <% if @order.driver_id.present? %>
-    <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
+    <h2><%= "Driver: #{@driver.name}" %></h2>
+  <% end %>
+<% end %>
+
+<% if current_user.admin? %>
+  <h2><%= "Client: #{@client.name}" %></h2>
+  <% if @order.driver_id.present? %>
+    <h2><%= "Driver: #{@driver.name}" %></h2>
   <% else %>
+    <h2><%= "Driver: no driver" %></h2>
+  <%end%>
+  
+<% end %>
+
+<h4><%= @info %></h4>
+<h4><%= "Status: " + @order.status %></h4>
+<strong>Actions:</strong>
+<ul>
+<% if @user.driver?%>
+  <% if @order.in_process? %>
+    <li><%= link_to "Finish", close_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>
+  <% end %>
+  <% if @order.looking_for_driver? %>
     <li><%= link_to "Accept", accept_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>
   <% end %>
-  <li><%= link_to "Edit", edit_order_path(@order) %></li>
-  <li><%= link_to "Delete", @order, method: "delete", data: { confirm: "Are you sure?" } %></li>
-  <li><%= link_to "Back", orders_path(user_id: params[:user_id]) %></li>
+<% end %>
+
+<% if @user.client? %>
+  <% if @order.looking_for_driver? %>
+    <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
+    <li><%= link_to "Edit", edit_order_path(@order) %></li>
+  <% end %>
+
+<% end %>
+<li><%= link_to "Back", "/users/#{current_user.id}" %></li>
 </ul>

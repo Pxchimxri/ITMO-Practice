@@ -1,35 +1,38 @@
 <h1><%= @user.role %></h1>
-
-<p><%= @user.name %></p>
+  <% if user_signed_in?%>
+    <% if @user == current_user%>
+      <span>Здравствуйте, <%= current_user.name %></span>
+      <%= link_to 'Выйти', destroy_user_session_path, :method => :delete %>
+    <% end %>
+  <% end %>
 <% if @user.driver? %>
   <p><%= "Balance: " + @user.balance.to_s %></p>
 <% end %>
-<% if @user.admin? %>
-  <p><%= "Money earned: " + @money.to_s %></p>
+<div>
+<% if @string.present?%>
+  <%=link_to  "Текущий заказ:" , order_path(@order, user_id: @user.id) %> <%= @string %>
+<% else %>
+ <%= "Нет заказа"%> 
 <% end %>
-<div><%= @string %></div>
-
+<div>
 <ul>
+
   <% if @user.client? %>
     <% if @user.cur_order_id.nil? %>
-      <li><%= link_to "New order", new_order_path(user_id: @user.id) %></li>
-    <% else %>
-      <% unless @driver_presence %>
-        <li><%= link_to "Cancel order", cancel_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
-      <% end %>
-    <% end %>
-  <% else %>
-    <% if @user.admin? %>
-      <li> <%= link_to "Options menu", options_path(user_id: @user.id) %> </li>
-    <% end %>
-    <% if @user.cur_order_id.nil? %>
-      <li><%= link_to "Look for orders", orders_path(user_id: @user.id) %></li>
-    <% else %>
-      <li><%= link_to "Open order", order_path(@order, user_id: @user.id) %></li>
-      <li><%= link_to "Close order", close_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
+      <li><%= link_to "New order", new_order_path %></li>
     <% end %>
   <% end %>
-  <li><%= link_to "Edit", edit_user_registration_path(@user) %></li>
-  <li><%= link_to "Delete",registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete  %></li>
-  <li><%= link_to "Back", users_path %></li>
+
+  <% if @user.admin? %>
+    <li> <%= link_to "Options menu", options_path(user_id: @user.id) %> </li>
+  <% end %>
+  <li><%= link_to "Orders", orders_path(user_id: @user.id) %></li>
+  <li><%= link_to "Profile Edit", edit_user_registration_path(@user) %></li>
+  <li><%= link_to "Profile Delete",registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete  %></li>
+  <% if @user.admin? %>
+    <h2>Admin Dashboard</h2>
+    <p><%= "Money earned: " + @money.to_s %></p>
+    <li><%= link_to "Users", "/users"%></li>
+    <li><%= link_to "Orders", "/orders" %></li>
+  <% end %>
 </ul>

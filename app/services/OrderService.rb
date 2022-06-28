@@ -1,20 +1,21 @@
 class OrderService
   INTEREST_RATE = 0.05
   attr_accessor :order
+
   def initialize(order)
     @order = order
   end
 
   def assemble(client)
     order.interest_rate = INTEREST_RATE
-    order.status = "not_finished"
-    if order.standard?
-      order.price = rand(300)+150
-    elsif order.comfort?
-      order.price = rand(550)+450
-    else
-      order.price = rand(2000)+1000
-    end
+    order.status = 'looking_for_driver'
+    order.price = if order.standard?
+                    rand(150..449)
+                  elsif order.comfort?
+                    rand(450..999)
+                  else
+                    rand(1000..2999)
+                  end
     order.client_id = client.id
   end
 
@@ -28,9 +29,7 @@ class OrderService
   def get_options
     order_options = []
     order_options_models = OrderOption.all
-    if order_options_models.present?
-      order_options = order_options_models.select { |model| model.order_id == order.id }
-    end
+    order_options = order_options_models.select { |model| model.order_id == order.id } if order_options_models.present?
     order_options.map(&:option)
   end
 
@@ -38,12 +37,18 @@ class OrderService
     order.message
   end
 
+  def cancel_order
+    client = User.find(order.client_id)
+    client.update(cur_order_id: nil)
+    order.update(status: 'canceled')
+  end
+
   def get_info
-    string = "To: " + order.to + "\n" +
-      "From: " + order.from + "\n" +
-      "Price: " + order.price.to_s + "\n" +
-      "Tariff: " + order.tariff + "\n" +
-      "Options: \n"
+    string = 'To: ' + order.to + "\n" +
+             'From: ' + order.from + "\n" +
+             'Price: ' + order.price.to_s + "\n" +
+             'Tariff: ' + order.tariff + "\n" +
+             "Options: \n"
     options = get_options
     options.each do |element|
       string += (element.name + ",\n")
