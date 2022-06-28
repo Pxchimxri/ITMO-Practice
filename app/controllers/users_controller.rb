@@ -7,9 +7,7 @@ class UsersController < ApplicationController
     user_service = UserService.new(@user)
     @info = user_service.get_order
     @money = FinanceService.new.count_money if @user.admin?
-    if @user.cur_order_id.present?
-      @order = Order.find(@user.cur_order_id)
-    end
+    @order = Order.find(@user.cur_order_id) if @user.cur_order_id.present?
   end
 
   # def edit

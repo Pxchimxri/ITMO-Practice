@@ -43,17 +43,13 @@ class OrdersController < ApplicationController
     if order_params[:driver_rating].present?
       @order.update(order_params)
       redirect_to rate_order_path(@order)
+    elsif @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
+      @user = User.find(params[:client_id])
+      CreateMessage.new(order_params[:message], @order).save if order_params[:message].present?
+      ConnectOptions.new(order_params, @order).connect
+      redirect_to user_path(@user)
     else
-      if @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
-        @user = User.find(params[:client_id])
-        if order_params[:message].present?
-          CreateMessage.new(order_params[:message], @order).save
-        end
-        ConnectOptions.new(order_params, @order).connect
-        redirect_to user_path(@user)
-      else
-        redirect_to edit_order_path(user_id: @user.id, msg: "Incorrect input")
-      end
+      redirect_to edit_order_path(user_id: @user.id, msg: 'Incorrect input')
     end
   end
 
@@ -120,19 +116,17 @@ class OrdersController < ApplicationController
   end
 
   def rate_page
-    @order = Order.find(params[:id])
-    @client, @driver = User.find(@order.client_id), User.find(@order.driver_id)
+    @client = User.find(@order.client_id)
+    @driver = User.find(@order.driver_id)
     @rating_presence = @order.driver_rating.present?
   end
 
   def rate
-    @order = Order.find(params[:id])
     RateService.new.rate_driver(@order)
     redirect_to rate_page_order_path(@order)
   end
 
   def skip_rate
-    @order = Order.find(params[:id])
     @client = User.find(@order.client_id)
     RateService.new.close_cur_order_id(@order)
     redirect_to user_path(@client)

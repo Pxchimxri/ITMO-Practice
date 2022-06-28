@@ -30,12 +30,18 @@
   <% if @order.looking_for_driver? %>
     <li><%= link_to "Accept", accept_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>
   <% end %>
+  <% if @order.on_way? %>
+    <li><%= link_to "Pick up passenger", pick_up_passenger_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
+  <% end %>
 <% end %>
 
 <% if @user.client? %>
   <% if @order.looking_for_driver? %>
     <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
     <li><%= link_to "Edit", edit_order_path(@order) %></li>
+  <% end %>
+  <% if @order.finished? %>
+    <li><%= link_to "Rate last driver", rate_page_order_path(@order) %></li>
   <% end %>
 
 <% end %>

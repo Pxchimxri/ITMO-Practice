@@ -12,13 +12,13 @@ class Ability
     can :manage, User, id: user.id
 
     if user.driver?
-      can %i[show index close], Order, driver_id: user.id
+      can %i[show index close pick_up_passenger], Order, driver_id: user.id
       can %i[show index cancel accept], Order, status: 'looking_for_driver'
     end
 
     if user.client?
       can %i[create], Order
-      can %i[show edit update index cancel], Order, client_id: user.id
+      can %i[show edit update index cancel rate_page rate skip_rate], Order, client_id: user.id
     end
 
     return unless user.admin? # additional permissions for administrators

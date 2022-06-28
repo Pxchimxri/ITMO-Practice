@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     member do
       delete :cancel
       post :accept
+      post :close
       get :rate_page
       post :rate
       get :rate

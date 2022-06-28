@@ -7,8 +7,7 @@ class DriverService
 
   def accept(order)
     driver.update(cur_order_id: order.id)
-    order.update(driver_id: driver.id, status: 'in_process')
-
+    order.update(driver_id: driver.id, status: 'on_way')
   end
 
   def cancel_order
@@ -19,7 +18,7 @@ class DriverService
 
   def pick_up_passenger
     order = Order.find(driver.cur_order_id)
-    order.update(status: "on_way")
+    order.update(status: 'in_process')
   end
 
   def close
