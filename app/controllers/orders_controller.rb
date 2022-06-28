@@ -40,11 +40,20 @@ class OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
-
-    if @order.update(order_params)
-      redirect_to @order
+    if order_params[:driver_rating].present?
+      @order.update(order_params)
+      redirect_to rate_order_path(@order)
     else
-      render :edit, status: :unprocessable_entity
+      if @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
+        @user = User.find(params[:client_id])
+        if order_params[:message].present?
+          CreateMessage.new(order_params[:message], @order).save
+        end
+        ConnectOptions.new(order_params, @order).connect
+        redirect_to user_path(@user)
+      else
+        redirect_to edit_order_path(user_id: @user.id, msg: "Incorrect input")
+      end
     end
   end
 
@@ -110,11 +119,30 @@ class OrdersController < ApplicationController
     render body: 'Not allowed', status: 403
   end
 
+  def rate_page
+    @order = Order.find(params[:id])
+    @client, @driver = User.find(@order.client_id), User.find(@order.driver_id)
+    @rating_presence = @order.driver_rating.present?
+  end
+
+  def rate
+    @order = Order.find(params[:id])
+    RateService.new.rate_driver(@order)
+    redirect_to rate_page_order_path(@order)
+  end
+
+  def skip_rate
+    @order = Order.find(params[:id])
+    @client = User.find(@order.client_id)
+    RateService.new.close_cur_order_id(@order)
+    redirect_to user_path(@client)
+  end
+
   private
 
   def order_params
     options = Option.all
     option_names = options.map(&:name)
-    params.require(:order).permit(:from, :to, :tariff, :message, option_names)
+    params.require(:order).permit(:from, :to, :tariff, :message, option_names, :driver_rating)
   end
 end

@@ -9,7 +9,6 @@
     <h2><%= "Driver: #{@driver.name}" %></h2>
   <% end %>
 <% end %>
-
 <% if current_user.admin? %>
   <h2><%= "Client: #{@client.name}" %></h2>
   <% if @order.driver_id.present? %>

@@ -5,11 +5,10 @@ class UsersController < ApplicationController
 
   def show
     user_service = UserService.new(@user)
-    @string = user_service.get_order
+    @info = user_service.get_order
     @money = FinanceService.new.count_money if @user.admin?
     if @user.cur_order_id.present?
       @order = Order.find(@user.cur_order_id)
-      @driver_presence = @order.driver_id.present?
     end
   end
 
@@ -35,6 +34,11 @@ class UsersController < ApplicationController
     @user.destroy
 
     redirect_to action: 'index'
+  end
+
+  def pick_up_passenger
+    DriverService.new(@user).pick_up_passenger
+    redirect_to user_path(@user)
   end
 
   def index

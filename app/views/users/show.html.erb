@@ -7,6 +7,9 @@
   <% end %>
 <% if @user.driver? %>
   <p><%= "Balance: " + @user.balance.to_s %></p>
+  <% if @user.rating.present? %>
+    <p><%= "Rating: " + @user.rating.to_s %></p>
+  <% end %>
 <% end %>
 <div>
 <% if @string.present?%>

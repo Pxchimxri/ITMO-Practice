@@ -51,10 +51,17 @@ class OrderService
              "Options: \n"
     options = get_options
     options.each do |element|
-      string += (element.name + ",\n")
+      string += (element.name + ",<br>")
     end
     msg = get_message
-    string += ("Message: \n" + msg.content) unless msg.nil?
+    string += ("Message: <br>" + msg.content + "<br>") unless msg.nil?
+    string += ("Client: " + order.client.name + "<br>")
+    if order.driver_id.present?
+      driver = User.find(order.driver_id)
+      string += ("Driver: " + driver.name)
+      string += (", " + driver.rating.to_s) if driver.rating.present?
+    end
+    p string
     string
   end
 
