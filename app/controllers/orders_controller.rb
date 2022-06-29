@@ -84,8 +84,13 @@ class OrdersController < ApplicationController
   end
 
   def cancel
-    OrderService.new(@order).cancel_order
-    redirect_to user_path(@user)
+    if @user.driver?
+      DriverService.new(@user).cancel_order
+      redirect_to order_path(@order)
+    else
+      OrderService.new(@order).cancel_order
+      redirect_to user_path(@user)
+    end
   end
 
   def accept

@@ -12,7 +12,7 @@ class Ability
     can :manage, User, id: user.id
 
     if user.driver?
-      can %i[show index close pick_up_passenger], Order, driver_id: user.id
+      can %i[show index close pick_up_passenger cancel], Order, driver_id: user.id
       can %i[show index cancel accept], Order, status: 'looking_for_driver'
     end
 

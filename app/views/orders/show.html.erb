@@ -32,6 +32,7 @@
   <% end %>
   <% if @order.on_way? %>
     <li><%= link_to "Pick up passenger", pick_up_passenger_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
+    <li><%= link_to "Cancel order", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
   <% end %>
 <% end %>
 
