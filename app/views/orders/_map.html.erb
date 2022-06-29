@@ -33,5 +33,5 @@
 <ul>
   <li><%= link_to "Submit", user_path(@user) %></li>
   <li><%= link_to "Edit", edit_order_path(@order, user_id: @user.id) %></li>
-  <li><%= link_to "Cancel order", cancel_order_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
+  <li><%= link_to "Cancel order", cancel_order_path(@order, user_id: @user.id), method: "delete", data: { confirm: "Are you sure?" } %></li>
 </ul>
