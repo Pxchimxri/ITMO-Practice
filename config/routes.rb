@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     member do
       post :pick_up_passenger
       delete :cancel
+      get :cancel
       post :close
     end
   end
