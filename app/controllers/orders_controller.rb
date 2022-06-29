@@ -41,7 +41,7 @@ class OrdersController < ApplicationController
   end
 
   def update
-      if @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
+    if @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
         @from = order_params[:from]
         @to = order_params[:to]
         if order_params[:message].present?
@@ -52,7 +52,6 @@ class OrdersController < ApplicationController
         redirect_to edit_order_path(user_id: @user.id, msg: "Incorrect input")
       end
     end
-  end
 
   def destroy
     @order = Order.find(params[:id])
@@ -139,10 +138,11 @@ class OrdersController < ApplicationController
   end
 
   private
-
   def order_params
     options = Option.all
     option_names = options.map(&:name)
     params.require(:order).permit(:from, :to, :tariff, :message, option_names, :driver_rating)
   end
 end
+
+
