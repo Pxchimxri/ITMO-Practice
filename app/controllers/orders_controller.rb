@@ -26,7 +26,6 @@ class OrdersController < ApplicationController
   end
 
   def show
-    # @order = Order.find(params[:id])
     @client = User.find(@order.client_id)
     @driver = User.find(@order.driver_id) if @order.driver_id.present?
     @info = OrderService.new(@order).get_info
@@ -74,7 +73,7 @@ class OrdersController < ApplicationController
 
     if params[:user_id].present?
       @orders = @orders.select do |order|
-        order.client_id.to_s == params[:user_id] || order.driver_id.to_s == params[:user_id] || order.status == 'looking_for_driver'
+        order.client_id.to_s == params[:user_id] || order.driver_id.to_s == params[:user_id]
       end
     end
 

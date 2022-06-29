@@ -10,10 +10,6 @@ class UsersController < ApplicationController
     @order = Order.find(@user.cur_order_id) if @user.cur_order_id.present?
   end
 
-  # def edit
-  #   @user = User.find(params[:id])
-  # end
-
   def update
     if @user.update(user_params)
       redirect_to @user
