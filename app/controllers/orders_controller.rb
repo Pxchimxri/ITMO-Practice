@@ -45,10 +45,10 @@ class OrdersController < ApplicationController
       @order.update(order_params)
       redirect_to rate_order_path(@order)
     elsif @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
-      @from = order_params[:from]
-      @to = order_params[:to]
+      @user = User.find(params[:client_id])
       CreateMessage.new(order_params[:message], @order).save if order_params[:message].present?
       ConnectOptions.new(order_params, @order).connect
+      redirect_to user_path(@user)
     else
       redirect_to edit_order_path(user_id: @user.id, msg: 'Incorrect input')
     end
@@ -139,10 +139,11 @@ class OrdersController < ApplicationController
   end
 
   private
-
   def order_params
     options = Option.all
     option_names = options.map(&:name)
     params.require(:order).permit(:from, :to, :tariff, :message, option_names, :driver_rating)
   end
 end
+
+
