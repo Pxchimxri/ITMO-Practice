@@ -12,6 +12,8 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
+    @from = order_params[:from]
+    @to = order_params[:to]
     order_service = OrderService.new(@order)
     order_service.assemble(@user)
     user_service = UserService.new(@user)
@@ -19,7 +21,6 @@ class OrdersController < ApplicationController
       user_service.new_order(order_service.order)
       CreateMessage.new(order_params[:message], order_service.order).save if order_params[:message].present?
       ConnectOptions.new(order_params, @order).connect
-      redirect_to user_path(@user)
     else
       redirect_to new_order_path(user_id: @user.id, msg: 'Incorrect input')
     end
@@ -29,6 +30,8 @@ class OrdersController < ApplicationController
     @client = User.find(@order.client_id)
     @driver = User.find(@order.driver_id) if @order.driver_id.present?
     @info = OrderService.new(@order).get_info
+    @first_point = @order.from
+    @second_point = @order.to
   end
 
   def edit
@@ -38,17 +41,16 @@ class OrdersController < ApplicationController
   end
 
   def update
-    @order = Order.find(params[:id])
-    if order_params[:driver_rating].present?
-      @order.update(order_params)
-      redirect_to rate_order_path(@order)
-    elsif @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
-      @user = User.find(params[:client_id])
-      CreateMessage.new(order_params[:message], @order).save if order_params[:message].present?
-      ConnectOptions.new(order_params, @order).connect
-      redirect_to user_path(@user)
-    else
-      redirect_to edit_order_path(user_id: @user.id, msg: 'Incorrect input')
+      if @order.update(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
+        @from = order_params[:from]
+        @to = order_params[:to]
+        if order_params[:message].present?
+          CreateMessage.new(order_params[:message], @order).save
+        end
+        ConnectOptions.new(order_params, @order).connect
+      else
+        redirect_to edit_order_path(user_id: @user.id, msg: "Incorrect input")
+      end
     end
   end
 

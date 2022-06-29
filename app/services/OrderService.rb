@@ -61,7 +61,6 @@ class OrderService
       string += ('Driver: ' + driver.name)
       string += (', ' + driver.rating.to_s) if driver.rating.present?
     end
-    p string
     string
   end
 
