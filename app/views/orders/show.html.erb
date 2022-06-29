@@ -1,3 +1,4 @@
+<script src="https://api-maps.yandex.ru/2.1/?apikey=76cc6e6c-84f7-4ced-9d12-c2ac2e3367db&lang=ru_RU" type="text/javascript"></script>
 <% if @order.driver_id.present? %>
   <h1><%= @driver.name %></h1>
 <% else %>
@@ -11,6 +12,35 @@
 <% end %>
 <div><%= @info.html_safe %></div>
 <p><%= "Status: " + @order.status %></p>
+<div id="map" style="width: 600px; height: 400px"></div>
+<input type="hidden" id="point1" value="<%= @first_point %>" />
+<input type="hidden" id="point2" value="<%= @second_point %>" />
+<script type="text/javascript">
+    // Функция ymaps.ready() будет вызвана, когда
+    // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
+    ymaps.ready(init);
+    function init(){
+        var multiRoute = new ymaps.multiRouter.MultiRoute({
+            // Точки маршрута. Точки могут быть заданы как координатами, так и адресом.
+            referencePoints: [document.getElementById("point1").value, document.getElementById("point2").value]
+        }, {
+            // Автоматически устанавливать границы карты так,
+            // чтобы маршрут был виден целиком.
+            boundsAutoApply: true
+        });
+
+        var myMap = new ymaps.Map("map", {
+
+            center: [55.76, 37.64],
+            // Уровень масштабирования. Допустимые значения:
+            // от 0 (весь мир) до 19.
+            zoom: 7
+        });
+
+        myMap.geoObjects.add(multiRoute);
+    }
+</script>
+
 <ul>
   <% if @user.driver? && (@order.looking_for_car? || @order.accepted?) %>
     <% if @order.driver_id.present? %>
