@@ -31,9 +31,7 @@ class OrdersController < ApplicationController
     @driver = User.find(@order.driver_id) if @order.driver_id.present?
     @info = OrderService.new(@order).get_info
     @first_point = @order.from
-    p @first_point
     @second_point = @order.to
-    p @second_point
   end
 
   def edit
