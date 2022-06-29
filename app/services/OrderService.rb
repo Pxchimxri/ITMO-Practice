@@ -44,22 +44,18 @@ class OrderService
   end
 
   def get_info
-    string = 'To: ' + order.to + "\n" +
-             'From: ' + order.from + "\n" +
-             'Price: ' + order.price.to_s + "\n" +
-             'Tariff: ' + order.tariff + "\n" +
-             "Options: \n"
+    string = "To: " + order.to + "<br>From: " + order.from + "<br>Price: " + order.price.to_s + "<br>Tariff: " + order.tariff + "<br>" + "Options:<br>"
     options = get_options
     options.each do |element|
-      string += (element.name + ',<br>')
+      string += (element.name + ",<br>")
     end
     msg = get_message
-    string += ('Message: <br>' + msg.content + "\n") unless msg.nil?
-    string += ('Client: ' + order.client.name + "\n")
+    string += ("Message: <br>" + msg.content + "<br>") unless msg.nil?
+    string += ("Client: " + order.client.name + "<br>")
     if order.driver_id.present?
       driver = User.find(order.driver_id)
-      string += ('Driver: ' + driver.name)
-      string += (', ' + driver.rating.to_s) if driver.rating.present?
+      string += ("Driver: " + driver.name)
+      string += (", " + driver.rating.to_s) if driver.rating.present?
     end
     string
   end

@@ -19,7 +19,7 @@
   
 <% end %>
 
-<h4><%= @info %></h4>
+<h4><%= @info.html_safe %></h4>
 <h4><%= "Status: " + @order.status %></h4>
 <script src="https://api-maps.yandex.ru/2.1/?apikey=76cc6e6c-84f7-4ced-9d12-c2ac2e3367db&lang=ru_RU" type="text/javascript"></script>
 <h2>Map of your route:</h2>

@@ -13,7 +13,7 @@
 <% end %>
 <div>
 <% if @info.present?%>
-  <%=link_to  "Текущий заказ:" , order_path(@order, user_id: @user.id) %> <%= @info %>
+  <%=link_to  "Текущий заказ:" , order_path(@order, user_id: @user.id) %><br> <%= @info.html_safe %>
 <% else %>
  <%= "Нет заказа"%> 
 <% end %>
