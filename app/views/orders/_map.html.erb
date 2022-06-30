@@ -1,0 +1,37 @@
+<script src="https://api-maps.yandex.ru/2.1/?apikey=76cc6e6c-84f7-4ced-9d12-c2ac2e3367db&lang=ru_RU" type="text/javascript"></script>
+<h1>Map of your route:</h1>
+
+
+<div id="map" style="width: 600px; height: 400px"></div>
+<input type="hidden" id="from" value="<%= @from%>" />
+<input type="hidden" id="to" value="<%= @to %>" />
+<script type="text/javascript">
+    // Функция ymaps.ready() будет вызвана, когда
+    // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
+    ymaps.ready(init);
+    function init(){
+        var multiRoute = new ymaps.multiRouter.MultiRoute({
+            // Точки маршрута. Точки могут быть заданы как координатами, так и адресом.
+            referencePoints: [document.getElementById("from").value, document.getElementById("to").value]
+        }, {
+            // Автоматически устанавливать границы карты так,
+            // чтобы маршрут был виден целиком.
+            boundsAutoApply: true
+        });
+
+        var myMap = new ymaps.Map("map", {
+
+            center: [55.76, 37.64],
+            // Уровень масштабирования. Допустимые значения:
+            // от 0 (весь мир) до 19.
+            zoom: 7
+        });
+
+        myMap.geoObjects.add(multiRoute);
+    }
+</script>
+<ul>
+  <li><%= link_to "Submit", user_path(@user) %></li>
+  <li><%= link_to "Edit", edit_order_path(@order, user_id: @user.id) %></li>
+  <li><%= link_to "Cancel order", cancel_order_path(@order, user_id: @user.id), method: "delete", data: { confirm: "Are you sure?" } %></li>
+</ul>

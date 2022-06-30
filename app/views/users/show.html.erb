@@ -1,0 +1,41 @@
+<h1><%= @user.role %></h1>
+  <% if user_signed_in?%>
+    <% if @user == current_user%>
+      <span>Здравствуйте, <%= current_user.name %></span>
+      <%= link_to 'Выйти', destroy_user_session_path, :method => :delete %>
+    <% end %>
+  <% end %>
+<% if @user.driver? %>
+  <p><%= "Balance: " + @user.balance.to_s %></p>
+  <% if @user.rating.present? %>
+    <p><%= "Rating: " + @user.rating.to_s %></p>
+  <% end %>
+<% end %>
+<div>
+<% if @info.present?%>
+  <%=link_to  "Текущий заказ:" , order_path(@order, user_id: @user.id) %><br> <%= @info.html_safe %>
+<% else %>
+ <%= "Нет заказа"%> 
+<% end %>
+</div>
+<ul>
+
+  <% if @user.client? %>
+    <% if @user.cur_order_id.nil? %>
+      <li><%= link_to "New order", new_order_path %></li>
+    <% end %>
+  <% end %>
+
+  <% if @user.admin? %>
+    <li> <%= link_to "Options menu", options_path(user_id: @user.id) %> </li>
+  <% end %>
+  <li><%= link_to "Orders", orders_path(user_id: @user.id) %></li>
+  <li><%= link_to "Profile Edit", edit_user_registration_path(@user) %></li>
+  <li><%= link_to "Profile Delete",registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete  %></li>
+  <% if @user.admin? %>
+    <h2>Admin Dashboard</h2>
+    <p><%= "Money earned: " + @money.to_s %></p>
+    <li><%= link_to "Users", "/users"%></li>
+    <li><%= link_to "Orders", "/orders" %></li>
+  <% end %>
+</ul>

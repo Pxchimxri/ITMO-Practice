@@ -1,0 +1,82 @@
+<h1><%= "Order ##{@order.id}"%></h1>
+
+<% if current_user.driver? %>
+  <h2><%= "Client: #{@client.name}" %></h2>
+<% end %>
+
+<% if current_user.client? %>
+  <% if @order.driver_id.present? %>
+    <h2><%= "Driver: #{@driver.name}" %></h2>
+  <% end %>
+<% end %>
+<% if current_user.admin? %>
+  <h2><%= "Client: #{@client.name}" %></h2>
+  <% if @order.driver_id.present? %>
+    <h2><%= "Driver: #{@driver.name}" %></h2>
+  <% else %>
+    <h2><%= "Driver: no driver" %></h2>
+  <%end%>
+  
+<% end %>
+
+<h4><%= @info.html_safe %></h4>
+<h4><%= "Status: " + @order.status %></h4>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=76cc6e6c-84f7-4ced-9d12-c2ac2e3367db&lang=ru_RU" type="text/javascript"></script>
+<h2>Map of your route:</h2>
+
+
+<div id="map" style="width: 600px; height: 400px"></div>
+<input type="hidden" id="from" value="<%= @first_point%>" />
+<input type="hidden" id="to" value="<%= @second_point %>" />
+<script type="text/javascript">
+    // Функция ymaps.ready() будет вызвана, когда
+    // загрузятся все компоненты API, а также когда будет готово DOM-дерево.
+    ymaps.ready(init);
+    function init(){
+        var multiRoute = new ymaps.multiRouter.MultiRoute({
+            // Точки маршрута. Точки могут быть заданы как координатами, так и адресом.
+            referencePoints: [document.getElementById("from").value, document.getElementById("to").value]
+        }, {
+            // Автоматически устанавливать границы карты так,
+            // чтобы маршрут был виден целиком.
+            boundsAutoApply: true
+        });
+
+        var myMap = new ymaps.Map("map", {
+
+            center: [55.76, 37.64],
+            // Уровень масштабирования. Допустимые значения:
+            // от 0 (весь мир) до 19.
+            zoom: 7
+        });
+
+        myMap.geoObjects.add(multiRoute);
+    }
+</script>
+<strong>Actions:</strong>
+<ul>
+<% if @user.driver?%>
+  <% if @order.in_process? %>
+    <li><%= link_to "Finish", close_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>
+  <% end %>
+  <% if @order.looking_for_driver? %>
+    <li><%= link_to "Accept", accept_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>
+  <% end %>
+  <% if @order.on_way? %>
+    <li><%= link_to "Pick up passenger", pick_up_passenger_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
+    <li><%= link_to "Cancel order", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
+  <% end %>
+<% end %>
+
+<% if @user.client? %>
+  <% if @order.looking_for_driver? %>
+    <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
+    <li><%= link_to "Edit", edit_order_path(@order) %></li>
+  <% end %>
+  <% if @order.finished? %>
+    <li><%= link_to "Rate last driver", rate_page_order_path(@order) %></li>
+  <% end %>
+
+<% end %>
+<li><%= link_to "Back", "/users/#{current_user.id}" %></li>
+</ul>

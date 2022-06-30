@@ -1,0 +1,8 @@
+<h1><%= @option.name %></h1>
+
+
+<ul>
+  <li><%= link_to "Edit", edit_option_path(@option) %></li>
+  <li><%= link_to "Delete", @option, method: "delete", data: { confirm: "Are you sure?" } %></li>
+  <li><%= link_to "Back", options_path %></li>
+</ul>
