@@ -1,3 +1,10 @@
 @import "bootstrap";
-@import "order/*";
 @import "./*";
+
+body {
+  background: #eee;
+}
+
+a {
+  text-decoration: none;
+}
