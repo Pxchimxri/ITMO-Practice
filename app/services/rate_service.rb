@@ -1,5 +1,4 @@
 class RateService
-
   def rate_driver(order)
     driver = User.find(order.driver_id)
     orders = Order.where(driver_id: driver.id)
@@ -20,6 +19,5 @@ class RateService
     client = User.find(order.client_id)
     client.update(cur_order_id: nil)
   end
-
 end
 
