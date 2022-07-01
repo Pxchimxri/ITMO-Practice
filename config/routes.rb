@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   devise_for :users
 
   root "users#index"
-  resources :orders, :users, :options
   resources :orders do
     member do
       delete :cancel
@@ -20,4 +19,5 @@ Rails.application.routes.draw do
       post :close
     end
   end
+  resources :options
 end
