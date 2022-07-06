@@ -1,4 +1,4 @@
-class ClientOrderListService < ApplicationService
+class PastOrderListService < ApplicationService
   def call
   end
 

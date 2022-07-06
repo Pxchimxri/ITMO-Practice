@@ -7,8 +7,9 @@ class Order < ApplicationRecord
   has_many :order_options
   has_many :options, through: :order_options
 
-  scope :looking_for_car_and_user_active, -> { looking_for_car.where(client: User.where(active: true)) }
-  scope :client, -> (client) { where(client: client) }
+  scope :by_client, -> (client) { where(client: client) }
+  scope :by_driver, -> (driver) { where(driver: driver) }
+  scope :by_status, -> (status) { where(status: status) }
 
   RATES = [1,2,3,4,5]
 

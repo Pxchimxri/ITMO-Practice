@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  has_scope :by_status, type: :array
+
   def new
     @order = Order.new
     @options = Option.all
@@ -64,20 +66,40 @@ class OrdersController < ApplicationController
   end
 
   def index
-    user = User.find(params[:user_id])
-    @role = user.role                                                         #
-    if @role == "client"                                                     # TODO: replace hardcoded role with cancancan
-      @orders = Order.client(user)                                           #
-      ClientOrderListService.call(@orders)
-    elsif @role == "driver"
-      @orders = Order.looking_for_car_and_user_active
-      DriverOrderListService.call(@orders)
-    elsif @role == "admin"
-      @orders = Order.all                                                   # TODO: implement pagination
-      @income_total = AdminOrderListService.call(@orders).result
-      render "orders/index_admin"
+    if User.exists?(params[:user_id])
+      user = User.find(params[:user_id])
+      @role = user.role # TODO: replace hardcoded role with cancancan
+      if @role == "driver"
+        @orders = Order.looking_for_car
+      elsif @role == "admin"
+        @orders = Order.all # TODO: implement pagination
+        @income_total = IncomeCalculator.call(@orders).result
+        render "orders/index_admin"
+      else
+        invalid_role(@role, %w[admin driver])
+      end
     else
-      invalid_role(@role)
+      raise
+    end
+  end
+
+  def hello
+    render "orders/hello"
+  end
+
+  def past
+    if User.exists?(2)
+      user = User.find(2)
+      @role = user.role # TODO: replace hardcoded role with cancancan
+      if @role == "client"
+        @orders = apply_scopes(Order).by_client(user)
+      elsif @role == "driver"
+        @orders = apply_scopes(Order).by_driver(user)
+      else
+        invalid_role(@role, %w[client driver])
+      end
+    else
+      raise
     end
   end
 
@@ -122,7 +144,8 @@ class OrdersController < ApplicationController
     params.require(:order).permit(:from, :to, :tariff, :message, option_names, :driver_rating)
   end
 
-  def invalid_role(role, msg = "Order index request was made with invalid role parameter #{role}", exception = ActionController::BadRequest)
+  def invalid_role(role, expected_roles, exception = ActionController::BadRequest)
+    msg = "Order request was made with invalid role parameter. Expected - #{expected_roles}. Passed - \"#{role}\"."
     Rails.logger.warn(msg)
     raise exception.new, msg
   end

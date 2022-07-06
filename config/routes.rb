@@ -4,12 +4,15 @@ Rails.application.routes.draw do
   root "users#index"
   resources :orders do
     member do
-      delete :cancel
       post :accept
-      get :rate_page
       post :rate
       get :rate
+      get :rate_page
+      delete :cancel
       delete :skip_rate
+    end
+    collection do
+      get :past
     end
   end
   resources :users do

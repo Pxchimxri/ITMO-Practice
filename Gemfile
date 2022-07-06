@@ -50,6 +50,9 @@ gem "rails-patterns"
 # Readymade styles gem for views styling
 gem "bootstrap"
 
+# Map controller parameters to named scopes
+gem "has_scope"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
