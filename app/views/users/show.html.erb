@@ -19,7 +19,7 @@
   <% if @user.client? %>
     <% if @user.cur_order_id.nil? %>
       <li><%= link_to "New order", new_order_path(user_id: @user.id) %></li>
-    <% elsif  @order.finished?%>
+    <% elsif @order.finished? %>
       <li><%= link_to "Rate last driver", rate_page_order_path(@order) %></li>
     <% else %>
       <% if @order.looking_for_car? || @order.accepted? %>
@@ -33,12 +33,15 @@
     <% end %>
     <% if @user.cur_order_id.nil? %>
       <li><%= link_to "Look for orders", orders_path(user_id: @user.id) %></li>
-    <% elsif @order.on_way?%>
+    <% elsif @order.on_way? %>
       <li><%= link_to "Close order", close_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
     <% else %>
       <li><%= link_to "Pick up passenger", pick_up_passenger_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
     <% end %>
   <% end %>
   <li><%= link_to "Edit", edit_user_registration_path(@user) %></li>
+  <% if @user.client? || @user.driver? %>
+    <li><%= link_to 'История заказов', past_orders_path %></li>
+  <% end %>
   <li><%= link_to "Back", users_path %></li>
 </ul>
