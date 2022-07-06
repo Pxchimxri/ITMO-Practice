@@ -2,15 +2,16 @@
 <html lang="EN">
 <head>
   <title>Заказы</title>
-  <%= stylesheet_link_tag "orders/index" %>
+  <%= stylesheet_link_tag 'orders/index' %>
 </head>
 
 <body>
 <div class="d-flex justify-content-center">
   <div class="col-md-3">
-    <h4 class="fw-bolder mt-0 mb-4"><%= "Доступные Заказы" %></h4>
+    <h4 class="fw-bolder mt-0 mb-4"><%= 'Доступные Заказы' %></h4>
+    <%= render partial: 'orders/partials/no_orders' if @orders.empty? %>
     <%= render partial: "orders/partials/order_list", locals: { orders: @orders } %>
-    <%= link_to "Обратно", :back %>
+    <%= link_to 'Обратно', :back %>
   </div>
 </div>
 </body>
