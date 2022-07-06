@@ -17,9 +17,9 @@
         <i class="icofont icofont-filter"></i>
       </button>
       <ul class="dropdown-menu checkbox-menu allow-focus">
-        <%= form_with(method: 'get', data: { controller: "orders--filters", target: "orders--filters.form", turbo_frame: :orderList }) do |form| %>
+        <%= form_with(method: 'get', data: { turbo_frame: :orderList }) do |form| %>
           <li>
-            <%= form.label('all_orders_filter', class: "fw-bolder") do %>
+            <%= form.label('all_orders_filter', class: 'fw-bolder') do %>
               <%= form.check_box('all_orders_filter', checked: true, disabled: true) %>
               <%= "Все заказы" %>
             <% end %>
@@ -32,7 +32,7 @@
             <% presenter = OrderStatusPresenter.new(key) %>
             <li>
               <%= form.label(key, class: presenter.bootstrap_class) do %>
-                <%= check_box_tag("by_status[]", key, true, multiple: true, class: 'status_filter', data: { action: "orders--filters#submit" } ) %>
+                <%= check_box_tag('by_status[]', key, true, multiple: true, class: 'status_filter', onchange: 'this.form.requestSubmit()') %>
                 <%= presenter.to_s %>
               <% end %>
             </li>
@@ -41,7 +41,7 @@
       </ul>
     </div>
     <h4 class="fw-bolder mt-0 mb-4"><%= "История Заказов" %></h4>
-    <%= turbo_frame_tag :orderList do %>
+    <%= turbo_frame_tag(:orderList) do %>
       <%= render partial: 'orders/partials/order_list', locals: { orders: @orders } %>
     <% end %>
     <%= link_to "Обратно", :back %>
