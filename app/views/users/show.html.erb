@@ -2,46 +2,46 @@
 
 <p><%= @user.name %></p>
 <% if @user.driver? %>
-  <p><%= "Balance: " + @user.balance.to_s %></p>
+  <p><%= "Баланс>: " + @user.balance.to_s %></p>
   <% if @user.rating.present? %>
-    <p><%= "Rating: " + @user.rating.to_s %></p>
+    <p><%= "Рейтинг: " + @user.rating.to_s %></p>
   <% end %>
 <% end %>
 <% if @user.admin? %>
-  <p><%= "Money earned: " + @money.to_s %></p>
+  <p><%= "Заработано: " + @money.to_s %></p>
 <% end %>
 <div><%= @info.html_safe %></div>
 
 <ul>
   <% if @user.cur_order_id.present? %>
-    <li><%= link_to "Open order", order_path(@order, user_id: @user.id) %></li>
+    <li><%= link_to 'Текущий заказ', order_path(@order, user_id: @user.id) %></li>
   <% end %>
   <% if @user.client? %>
     <% if @user.cur_order_id.nil? %>
-      <li><%= link_to "New order", new_order_path(user_id: @user.id) %></li>
+      <li><%= link_to 'Новый заказ', new_order_path(user_id: @user.id) %></li>
     <% elsif @order.finished? %>
-      <li><%= link_to "Rate last driver", rate_page_order_path(@order) %></li>
+      <li><%= link_to 'Оценить последний заказ', rate_page_order_path(@order) %></li>
     <% else %>
       <% if @order.looking_for_car? || @order.accepted? %>
-        <li><%= link_to "Cancel order", cancel_user_path(@user), method: "delete", data: { confirm: "Are you sure?" } %></li>
-        <li><%= link_to "Edit order", edit_order_path(@order, user_id: @user.id) %></li>
+        <li><%= link_to 'Отменить заказ', cancel_user_path(@user), method: "delete", data: { confirm: 'Вы уверены?' } %></li>
+        <li><%= link_to 'Изменить детали заказа', edit_order_path(@order, user_id: @user.id) %></li>
       <% end %>
     <% end %>
   <% else %>
     <% if @user.admin? %>
-      <li> <%= link_to "Options menu", options_path(user_id: @user.id) %> </li>
+      <li> <%= link_to 'Опции', options_path(user_id: @user.id) %> </li>
     <% end %>
     <% if @user.cur_order_id.nil? %>
-      <li><%= link_to "Look for orders", orders_path(user_id: @user.id) %></li>
+      <li><%= link_to 'Доступные заказы', orders_path(user_id: @user.id) %></li>
     <% elsif @order.on_way? %>
-      <li><%= link_to "Close order", close_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
+      <li><%= link_to 'Закрыть заказ', close_user_path(@user), method: "post", data: { confirm: 'Вы уверены?' } %></li>
     <% else %>
-      <li><%= link_to "Pick up passenger", pick_up_passenger_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
+      <li><%= link_to 'Принять заказ', pick_up_passenger_user_path(@user), method: "post", data: { confirm: 'Вы уверены?' } %></li>
     <% end %>
   <% end %>
-  <li><%= link_to "Edit", edit_user_registration_path(@user) %></li>
+  <li><%= link_to 'Редактировать профиль', edit_user_registration_path(@user) %></li>
   <% if @user.client? || @user.driver? %>
     <li><%= link_to 'История заказов', past_orders_path %></li>
   <% end %>
-  <li><%= link_to "Back", users_path %></li>
+  <li><%= link_to 'Обратно', users_path %></li>
 </ul>
