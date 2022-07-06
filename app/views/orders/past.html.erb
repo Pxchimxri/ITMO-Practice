@@ -32,7 +32,7 @@
             <% presenter = OrderStatusPresenter.new(key) %>
             <li>
               <%= form.label(key, class: presenter.bootstrap_class) do %>
-                <%= check_box_tag('by_status[]', key, true, multiple: true, class: 'status_filter', onchange: 'this.form.requestSubmit()') %>
+                <%= check_box_tag('by_status[]', key, true, id: key, multiple: true, class: 'status_filter', onchange: 'this.form.requestSubmit()') %>
                 <%= presenter.to_s %>
               <% end %>
             </li>
