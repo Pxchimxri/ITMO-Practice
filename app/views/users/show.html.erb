@@ -2,7 +2,7 @@
 
 <p><%= @user.name %></p>
 <% if @user.driver? %>
-  <p><%= "Баланс>: " + @user.balance.to_s %></p>
+  <p><%= "Баланс: " + @user.balance.to_s %></p>
   <% if @user.rating.present? %>
     <p><%= "Рейтинг: " + @user.rating.to_s %></p>
   <% end %>
