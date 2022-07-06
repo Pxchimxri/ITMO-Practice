@@ -83,10 +83,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  def hello
-    render "orders/hello"
-  end
-
   def past
     if User.exists?(2)
       user = User.find(2)
