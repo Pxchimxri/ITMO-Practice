@@ -6,7 +6,9 @@ class IncomeTotal < ApplicationCalculation
   def result
     service_income_total = 0
     subject.each do |order|
-      service_income_total += order.service_income
+      if order.finished?
+        service_income_total += order.service_income
+      end
     end
     service_income_total
   end
