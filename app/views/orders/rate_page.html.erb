@@ -4,7 +4,7 @@
   <li><%= link_to "Back", user_path(@client) %></li>
 <% else %>
   <p><%= @client.name + ", please rate your last driver " + @driver.name + " or "  %>
-    <%= link_to "skip this", skip_rate_order_path(@order), method: "delete", data: { confirm: "Are you sure?" } %></p>
+    <%= link_to "skip this", skip_rate_order_path(@order), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></p>
   <%= form_with model: @order do |form| %>
 
 

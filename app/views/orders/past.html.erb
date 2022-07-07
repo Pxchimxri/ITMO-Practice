@@ -16,7 +16,7 @@
         <i class='icofont icofont-filter'></i>
       </button>
       <ul class='dropdown-menu checkbox-menu allow-focus'>
-        <%= form_with(method: 'get', data: { turbo_frame: :order_list }) do |form| %>
+        <%= form_with(method: :get, data: { turbo_frame: :order_list }) do |form| %>
           <li>
             <%= form.label('all_orders_filter', class: 'fw-bolder') do %>
               <%= form.check_box('all_orders_filter', checked: true, disabled: true) %>

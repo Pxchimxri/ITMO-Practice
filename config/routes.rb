@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  root "users#index"
+  root 'users#show'
   resources :orders do
     member do
       post :accept
+      post :close
       post :rate
       get :rate
       get :rate_page
@@ -18,8 +19,6 @@ Rails.application.routes.draw do
   resources :users do
     member do
       post :pick_up_passenger
-      delete :cancel
-      post :close
     end
   end
   resources :options
