@@ -62,15 +62,12 @@ class OrdersController < ApplicationController
   end
 
   def index
-    role = current_user.role
-    if role == 'driver'
+    if current_user.role == 'driver'
       @orders = Order.looking_for_car
-    elsif role == 'admin'
+    else
       @orders = Order.all # TODO: implement pagination
       @income_total = IncomeCalculator.call(@orders).result
       render 'orders/index_admin'
-    else
-      invalid_role(role, %w[admin driver])
     end
   end
 
