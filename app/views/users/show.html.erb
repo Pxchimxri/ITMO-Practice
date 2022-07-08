@@ -25,16 +25,18 @@
   <% end %>
 
   <% if @user.admin? %>
-    <li> <%= link_to 'Опции', options_path(user_id: @user.id) %> </li>
+    <li> <%= link_to 'Меню Опций', options_path(user_id: @user.id) %> </li>
   <% end %>
 
   <% if @user.admin? || @user.driver? %>
     <li><%= link_to 'Доступные Заказы', looking_for_car_orders_path %></li>
   <% end %>
 
-  <li><%= link_to 'История Заказов', past_orders_path %></li>
-  <li><%= link_to 'Редактировать профиль', edit_user_registration_path(@user) %></li>
-  <li><%= link_to 'Удалить Профиль', registration_path(@user), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></li>
+  <% if @user.client? || @user.driver? %>
+    <li><%= link_to 'История Заказов', orders_path %></li>
+    <li><%= link_to 'Редактировать Профиль', edit_user_registration_path(@user) %></li>
+    <li><%= link_to 'Удалить Профиль', registration_path(@user), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></li>
+  <% end %>
 
   <% if @user.admin? %>
     <li><%= link_to 'Пользователи', users_path %></li>
