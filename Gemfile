@@ -23,9 +23,6 @@ gem "importmap-rails"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 
-# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
-
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
@@ -43,6 +40,15 @@ gem "tzinfo-data"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
+
+# Helpful patterns to reduce boilerplate code
+gem "rails-patterns"
+
+# Readymade styles gem for views styling
+gem "bootstrap"
+
+# Map controller parameters to named scopes
+gem "has_scope"
 
 # Use Sass to process CSS
 # gem "sassc-rails"

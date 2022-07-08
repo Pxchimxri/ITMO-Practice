@@ -1,41 +1,45 @@
 <h1><%= @user.role %></h1>
-  <% if user_signed_in?%>
-    <% if @user == current_user%>
-      <span>Здравствуйте, <%= current_user.name %></span>
-      <%= link_to 'Выйти', destroy_user_session_path, :method => :delete %>
-    <% end %>
+<% if user_signed_in? %>
+  <% if @user == current_user %>
+    <span>Здравствуйте, <%= current_user.name %></span>
+    <%= link_to 'Выйти', destroy_user_session_path, data: { turbo_method: :delete } %>
   <% end %>
+<% end %>
 <% if @user.driver? %>
-  <p><%= "Balance: " + @user.balance.to_s %></p>
+  <p><%= "Баланс: " + @user.balance.to_s %></p>
   <% if @user.rating.present? %>
-    <p><%= "Rating: " + @user.rating.to_s %></p>
+    <p><%= "Рейтинг: " + @user.rating.to_s %></p>
   <% end %>
 <% end %>
-<div>
-<% if @info.present?%>
-  <%=link_to  "Текущий заказ:" , order_path(@order, user_id: @user.id) %><br> <%= @info.html_safe %>
-<% else %>
- <%= "Нет заказа"%> 
+<% if @info.present? %>
+  <div>
+    <%= link_to 'Текущий Заказ:', order_path(@order, user_id: @user.id) %><br> <%= @info.html_safe %>
+  </div>
 <% end %>
-</div>
-<ul>
 
+<ul>
   <% if @user.client? %>
     <% if @user.cur_order_id.nil? %>
-      <li><%= link_to "New order", new_order_path %></li>
+      <li><%= link_to 'Новый Заказ', new_order_path %></li>
     <% end %>
   <% end %>
 
   <% if @user.admin? %>
-    <li> <%= link_to "Options menu", options_path(user_id: @user.id) %> </li>
+    <li> <%= link_to 'Меню Опций', options_path(user_id: @user.id) %> </li>
   <% end %>
-  <li><%= link_to "Orders", orders_path(user_id: @user.id) %></li>
-  <li><%= link_to "Profile Edit", edit_user_registration_path(@user) %></li>
-  <li><%= link_to "Profile Delete",registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete  %></li>
+
+  <% if @user.admin? || @user.driver? %>
+    <li><%= link_to 'Доступные Заказы', looking_for_car_orders_path %></li>
+  <% end %>
+
+  <% if @user.client? || @user.driver? %>
+    <li><%= link_to 'История Заказов', orders_path %></li>
+    <li><%= link_to 'Редактировать Профиль', edit_user_registration_path(@user) %></li>
+    <li><%= link_to 'Удалить Профиль', registration_path(@user), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></li>
+  <% end %>
+
   <% if @user.admin? %>
-    <h2>Admin Dashboard</h2>
-    <p><%= "Money earned: " + @money.to_s %></p>
-    <li><%= link_to "Users", "/users"%></li>
-    <li><%= link_to "Orders", "/orders" %></li>
+    <li><%= link_to 'Пользователи', users_path %></li>
+    <li><%= link_to 'Заказы', dashboard_orders_path %></li>
   <% end %>
 </ul>

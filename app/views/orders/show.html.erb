@@ -56,21 +56,21 @@
 <strong>Actions:</strong>
 <ul>
 <% if @user.driver?%>
-  <% if @order.in_process? %>
-    <li><%= link_to "Finish", close_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>
+  <% if @order.accepted? %>
+    <li><%= link_to "Finish", close_order_path(@order, user_id: params[:user_id]), data: { turbo_method: :post, turbo_confirm: 'Вы уверены?' } %></li>
   <% end %>
-  <% if @order.looking_for_driver? %>
-    <li><%= link_to "Accept", accept_order_path(@order, user_id: params[:user_id]), method: "post", data: { confirm: "Are you sure?" } %></li>
+  <% if @order.looking_for_car? %>
+    <li><%= link_to "Accept", accept_order_path(@order, user_id: params[:user_id]), data: { turbo_method: :post, turbo_confirm: 'Вы уверены?' } %></li>
   <% end %>
   <% if @order.on_way? %>
-    <li><%= link_to "Pick up passenger", pick_up_passenger_user_path(@user), method: "post", data: { confirm: "Are you sure?" } %></li>
-    <li><%= link_to "Cancel order", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
+    <li><%= link_to "Pick up passenger", pick_up_passenger_user_path(@user), data: { turbo_method: :post, turbo_confirm: 'Вы уверены?' } %></li>
+    <li><%= link_to "Cancel order", cancel_order_path(@order, user_id: params[:user_id]), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></li>
   <% end %>
 <% end %>
 
 <% if @user.client? %>
-  <% if @order.looking_for_driver? %>
-    <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), method: "delete", data: { confirm: "Are you sure?" } %></li>
+  <% if @order.looking_for_car? %>
+    <li><%= link_to "Cancel", cancel_order_path(@order, user_id: params[:user_id]), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></li>
     <li><%= link_to "Edit", edit_order_path(@order) %></li>
   <% end %>
   <% if @order.finished? %>

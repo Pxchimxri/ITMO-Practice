@@ -5,8 +5,7 @@ class UsersController < ApplicationController
 
   def show
     user_service = UserService.new(@user)
-    @info = user_service.get_order
-    @money = FinanceService.new.count_money if @user.admin?
+    @info = user_service.cur_order
     @order = Order.find(@user.cur_order_id) if @user.cur_order_id.present?
   end
 

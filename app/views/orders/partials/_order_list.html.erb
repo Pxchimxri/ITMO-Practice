@@ -1,0 +1,19 @@
+<% @orders.each do |order| %>
+  <div class='card bg-white mb-4 shadow-sm'>
+    <div class='p-4'>
+      <h5 class='float-end text-primary fw-bolder mb-1'><%= order.price.round(2) %> &#8381;</h5>
+      <%= render partial: 'orders/partials/order_datetime', locals: { order: order } %>
+      <h6 class='float-end fw-bolder'><%= order.tariff %></h6>
+      <% unless order.looking_for_car? %>
+        <h6 class='mb-2'>
+          <a href='#' class='text-black text-decoration-none fw-bolder'><%= order.driver.name %></a>
+        </h6>
+      <% end %>
+      <p class='text-gray mb-1'><i class='icofont icofont-location-arrow'></i>
+        <%= order.from %>
+      </p>
+      <p class='text-gray mb-2'><i class='icofont icofont-location-pin'></i>
+        <%= order.to %>
+    </div>
+  </div>
+<% end %>

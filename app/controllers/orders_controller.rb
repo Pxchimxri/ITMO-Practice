@@ -1,8 +1,10 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_order, except: %i[index new create]
+  before_action :load_order, except: %i[new create index dashboard looking_for_car]
   before_action :load_user
   authorize_resource
+
+  has_scope :by_status, type: :array
 
   def new
     @order = Order.new
@@ -12,8 +14,6 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(from: order_params[:from], to: order_params[:to], tariff: order_params[:tariff])
-    @from = order_params[:from]
-    @to = order_params[:to]
     order_service = OrderService.new(@order)
     order_service.assemble(@user)
     user_service = UserService.new(@user)
@@ -62,27 +62,16 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = Order.accessible_by(current_ability)
+    @orders = apply_scopes(Order).accessible_by(current_ability)
+  end
 
-    @orders_to_take = @orders.select { |order| order.status == 'looking_for_driver' }
+  def dashboard
+    @orders = Order.all # TODO: implement pagination
+    @income_total = IncomeCalculator.call(@orders).result
+  end
 
-    @orders = @orders.reject { |order| order.status == 'looking_for_driver' }
-
-    @current_order = Order.find(@user.cur_order_id) if @user.cur_order_id.present?
-
-    user_service = UserService.new(@user)
-    @current_order_info = user_service.get_order
-
-    if params[:user_id].present?
-      @orders = @orders.select do |order|
-        order.client_id.to_s == params[:user_id] || order.driver_id.to_s == params[:user_id]
-      end
-    end
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @orders }
-    end
+  def looking_for_car
+    @orders = Order.looking_for_car
   end
 
   def cancel
@@ -139,11 +128,10 @@ class OrdersController < ApplicationController
   end
 
   private
+
   def order_params
     options = Option.all
     option_names = options.map(&:name)
     params.require(:order).permit(:from, :to, :tariff, :message, option_names, :driver_rating)
   end
 end
-
-

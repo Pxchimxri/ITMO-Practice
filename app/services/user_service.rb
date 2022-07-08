@@ -5,13 +5,7 @@ class UserService
     @user = user
   end
 
-  def orders
-    return Order.find(driver_id: @user.id, status: 'looking_for_driver') if @user.driver?
-    return Order.find(client_id: @user.id) if @user.client?
-    return Order.all if @user.admin?
-  end
-
-  def get_order
+  def cur_order
     if @user.cur_order_id.present?
       order = Order.find(@user.cur_order_id)
       order_service = OrderService.new(order)

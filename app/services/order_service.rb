@@ -8,7 +8,7 @@ class OrderService
 
   def assemble(client)
     order.interest_rate = INTEREST_RATE
-    order.status = 'looking_for_driver'
+    order.status = 'looking_for_car'
     order.price = if order.standard?
                     rand(150..449)
                   elsif order.comfort?
@@ -28,7 +28,7 @@ class OrderService
 
   def get_options
     order_options = []
-    order_options_models = OrderOption.all
+    order_options_models = OrdersOption.all
     order_options = order_options_models.select { |model| model.order_id == order.id } if order_options_models.present?
     order_options.map(&:option)
   end

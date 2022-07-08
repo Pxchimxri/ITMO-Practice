@@ -28,11 +28,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_21_084052) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "order_options", force: :cascade do |t|
-    t.integer "order_id"
-    t.integer "option_id"
+  create_table "orders_options", id: false, force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "option_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_options_orders_on_option_id"
+    t.index ["order_id"], name: "index_options_orders_on_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
