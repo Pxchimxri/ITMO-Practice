@@ -33,5 +33,5 @@
 <ul>
   <li><%= link_to "Submit", user_path(@user) %></li>
   <li><%= link_to "Edit", edit_order_path(@order, user_id: @user.id) %></li>
-  <li><%= link_to "Cancel order", cancel_order_path(@order, user_id: @user.id), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></li>
+  <li><%= link_to 'Отменить заказ', cancel_order_path(@order, user_id: @user.id), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></li>
 </ul>
