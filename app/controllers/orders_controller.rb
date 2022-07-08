@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_order, except: %i[new create index past]
+  before_action :load_order, except: %i[new create index dashboard looking_for_car]
   before_action :load_user
   authorize_resource
 
@@ -62,17 +62,16 @@ class OrdersController < ApplicationController
   end
 
   def index
-    if current_user.role == 'driver'
-      @orders = Order.looking_for_car
-    else
-      @orders = Order.all # TODO: implement pagination
-      @income_total = IncomeCalculator.call(@orders).result
-      render 'orders/index_admin'
-    end
+    @orders = apply_scopes(Order).accessible_by(current_ability)
   end
 
-  def past
-    @orders = apply_scopes(Order).accessible_by(current_ability, :show)
+  def dashboard
+    @orders = Order.all # TODO: implement pagination
+    @income_total = IncomeCalculator.call(@orders).result
+  end
+
+  def looking_for_car
+    @orders = Order.looking_for_car
   end
 
   def cancel

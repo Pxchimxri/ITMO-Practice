@@ -1,17 +1,48 @@
 <!DOCTYPE html>
-<html lang="EN">
+<html lang='EN'>
 <head>
   <title>Заказы</title>
-  <%= stylesheet_link_tag 'orders/index' %>
+  <%= stylesheet_link_tag('orders/index', "data-turbo-track": 'reload') %>
+  <%= javascript_include_tag('orders/index', "data-turbo-track": 'reload', defer: true) %>
 </head>
 
 <body>
-<div class="d-flex justify-content-center">
-  <div class="col-md-3">
-    <h4 class="fw-bolder mt-0 mb-4"><%= 'Доступные Заказы' %></h4>
-    <%= render partial: 'orders/partials/no_orders' if @orders.empty? %>
-    <%= render partial: "orders/partials/order_list", locals: { orders: @orders } %>
-    <%= link_to 'Обратно', user_path(current_user) %>
+<div class='d-flex justify-content-center'>
+  <div class='col-md-3'>
+    <div class='dropdown float-end'>
+      <button class='btn dropdown-toggle' type='button' data-bs-toggle='dropdown' aria-expanded='false'>
+        <i class='icofont icofont-filter'></i>
+      </button>
+      <ul class='dropdown-menu checkbox-menu allow-focus'>
+        <%= form_with(method: :get, data: { turbo_frame: :order_list }) do |form| %>
+          <li>
+            <%= form.label('all_orders_filter', class: 'fw-bolder') do %>
+              <%= form.check_box('all_orders_filter', checked: true, disabled: true) %>
+              <%= 'Все заказы' %>
+            <% end %>
+          </li>
+          <li>
+            <hr>
+          </li>
+          <%= hidden_field_tag('by_status[]', 'none') %>
+          <% Order.statuses.symbolize_keys.each_key do |key| %>
+            <% presenter = OrderStatusPresenter.new(key) %>
+            <li>
+              <%= form.label(key, class: presenter.bootstrap_class) do %>
+                <%= check_box_tag('by_status[]', key, true, id: key, multiple: true, class: 'status_filter', onchange: 'this.form.requestSubmit()') %>
+                <%= presenter.to_s %>
+              <% end %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+    <h4 class='fw-bolder mt-0 mb-4'><%= 'История Заказов' %></h4>
+    <%= turbo_frame_tag :order_list do %>
+      <%= render partial: 'orders/partials/no_orders' if @orders.empty? %>
+      <%= render partial: 'orders/partials/order_list', locals: { orders: @orders } %>
+    <% end %>
+    <%= link_to'Обратно', user_path(current_user) %>
   </div>
 </div>
 </body>

@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
   <title>Заказы</title>
-  <%= stylesheet_link_tag "orders/index_admin" %>
+  <%= stylesheet_link_tag 'orders/dashboard' %>
 </head>
 <body>
 
 <div class="container">
-  <%= render partial: "orders/partials/dashboard_total_panel", locals: { orders: @orders, income_total: @income_total } %>
+  <%= render partial: 'orders/partials/dashboard_total_panel', locals: { orders: @orders, income_total: @income_total } %>
 
   <div class="row">
     <div class="col-lg-12">
       <div class="card shadow-sm">
         <div class="card-body">
           <div class="table-responsive">
-            <%= render partial: "orders/partials/admin_order_list", locals: { orders: @orders } %>
+            <%= render partial: 'orders/partials/dashboard_order_list', locals: { orders: @orders } %>
           </div>
         </div>
       </div>
-      <%= link_to "Обратно", :back %>
+      <%= link_to "Обратно", user_path(current_user) %>
     </div>
   </div>
 </div>

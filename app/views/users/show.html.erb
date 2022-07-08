@@ -28,8 +28,8 @@
     <li> <%= link_to 'Опции', options_path(user_id: @user.id) %> </li>
   <% end %>
 
-  <% if @user.admin? %>
-    <li><%= link_to 'Доступные Заказы', orders_path %></li>
+  <% if @user.admin? || @user.driver? %>
+    <li><%= link_to 'Доступные Заказы', looking_for_car_orders_path %></li>
   <% end %>
 
   <li><%= link_to 'История Заказов', past_orders_path %></li>
@@ -40,6 +40,6 @@
     <h2>Admin Dashboard</h2>
     <p><%= "Денег получено: " + @money.to_s %></p>
     <li><%= link_to 'Пользователи', users_path %></li>
-    <li><%= link_to 'Заказы', orders_path %></li>
+    <li><%= link_to 'Заказы', dashboard_orders_path %></li>
   <% end %>
 </ul>

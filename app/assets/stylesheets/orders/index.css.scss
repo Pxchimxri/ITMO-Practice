@@ -1,15 +1,16 @@
-body {
-  margin-top: 20px;
+.checkbox-menu li label {
+  padding: 3px 10px;
+  margin: 0;
 }
 
-.shadow-sm {
-  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+.checkbox-menu li input {
+  margin: 0 5px;
 }
 
-h5 {
-    font-size: 1.15rem;
+.checkbox-menu hr {
+  margin: 5px;
 }
 
-h6 {
-    font-size: 1.05rem;
+.icofont-not-allowed {
+  font-size: 2.5rem;
 }

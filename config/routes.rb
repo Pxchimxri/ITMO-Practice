@@ -13,7 +13,8 @@ Rails.application.routes.draw do
       delete :skip_rate
     end
     collection do
-      get :past
+      get :dashboard
+      get :looking_for_car
     end
   end
   resources :users do
