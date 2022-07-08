@@ -11,7 +11,7 @@
     <h4 class="fw-bolder mt-0 mb-4"><%= 'Доступные Заказы' %></h4>
     <%= render partial: 'orders/partials/no_orders' if @orders.empty? %>
     <%= render partial: "orders/partials/order_list", locals: { orders: @orders } %>
-    <%= link_to 'Обратно', :back %>
+    <%= link_to 'Обратно', user_path(current_user) %>
   </div>
 </div>
 </body>

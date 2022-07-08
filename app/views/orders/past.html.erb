@@ -44,7 +44,7 @@
       <%= render partial: 'orders/partials/no_orders' if @orders.empty? %>
       <%= render partial: 'orders/partials/order_list', locals: { orders: @orders } %>
     <% end %>
-    <%= link_to 'Обратно', :back %>
+    <%= link_to 'Обратно', user_path(current_user) %>
   </div>
 </div>
 </body>
