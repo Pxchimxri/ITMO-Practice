@@ -9,7 +9,7 @@ class ConnectOptions
     options = Option.all
     options.each do |element|
       if @params[element.name] == "1"
-        order_option = OrderOption.new(order_id: @order.id, option_id: element.id)
+        order_option = OrdersOption.new(order_id: @order.id, option_id: element.id)
         order_option.save
       end
     end

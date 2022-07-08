@@ -28,7 +28,7 @@ class OrderService
 
   def get_options
     order_options = []
-    order_options_models = OrderOption.all
+    order_options_models = OrdersOption.all
     order_options = order_options_models.select { |model| model.order_id == order.id } if order_options_models.present?
     order_options.map(&:option)
   end
