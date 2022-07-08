@@ -37,8 +37,6 @@
   <li><%= link_to 'Удалить Профиль', registration_path(@user), data: { turbo_method: :delete, turbo_confirm: 'Вы уверены?' } %></li>
 
   <% if @user.admin? %>
-    <h2>Admin Dashboard</h2>
-    <p><%= "Денег получено: " + @money.to_s %></p>
     <li><%= link_to 'Пользователи', users_path %></li>
     <li><%= link_to 'Заказы', dashboard_orders_path %></li>
   <% end %>
